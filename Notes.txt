@@ -1,0 +1,25 @@
+﻿CONCEITOS MVC
+
+📌 MODEL
+- Responsável pelos dados e regras de negócio
+- Representa as informações do sistema (dados que vêm do banco de dados, cálculos, regras de validação, etc.).
+- Normalmente, contém classes que definem os objetos usados na aplicação.
+- Não tem conhecimento sobre a interface gráfica (View) ou sobre a lógica de controle (Controller).
+
+📌 CONTROLLER
+- Gerencia a lógica da aplicação e conecta o Model com a View
+- Recebe as requisições do usuário e decide o que fazer.
+- Processa dados do Model e repassa para a View.
+- Retorna uma resposta para o usuário.
+- O Controller pega os dados do Model e os envia para a View
+
+📌 VIEW
+- Responsável pela interface com o usuário
+- Exibe os dados para o usuário (HTML + C# usando Razor).
+- Não deve conter regras de negócio, apenas a apresentação da informação.
+
+
+
+
+
+
