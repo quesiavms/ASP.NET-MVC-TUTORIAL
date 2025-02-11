@@ -23,8 +23,23 @@ namespace MVCTutorial.Controllers
                 new Employee { EmployeeID = 3, Name = "Paulo", Department = "Inventory" },
                 new Employee { EmployeeID = 4, Name = "Marcia", Department = "Sales" }
             };
+            //ViewBag.EmployeeList = employeeList;
+            ViewData["EmployeeList"] = employeeList;
+
+            ViewBag.EmployeeNameVB = "Maria";
+
+            ViewData["EmployeeNameVD"] = "Joana";
+
+            TempData["EmployeeNameTD"] = "Ana";
+
+            TempData.Keep();
 
             return View(employeeList);
+        }
+
+        public IActionResult SecondPage()
+        {
+            return View();
         }
     }
 }

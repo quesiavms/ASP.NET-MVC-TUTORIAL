@@ -36,14 +36,29 @@
         <th>Department</th>
     </tr>
     <tbody>
-        @if(Model != null){
-            foreach(var item in Model){
+
+        @foreach (var item in ViewData["EmployeeList"] as List<MVCTutorial.Models.Employee>)
+        {
                 <tr>
                     <td>@item.EmployeeID</td>
                     <td>@item.Name</td>
                     <td>@item.Department</td>
                 </tr>
             }
-        }
+
     </tbody>
 </table>
+<ul class="list-group">
+    <li class="list-group-item">
+        Your viewBag Value is <b> @ViewBag.EmployeeNameVB</b>
+    </li>
+    <li class="list-group-item">
+        Your viewData is <b>@ViewData["EmployeeNameVD"]</b>
+    </li>
+    <li class="list-group-item">
+        Your tempDaa is <b>@TempData["EmployeeNameTD"]</b>
+    </li>
+    <li class="list-group-item">
+        <a href="/Teste/SecondPage"> Go to SecondPage</a>
+    </li>
+</ul>
