@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Graph.Models;
 using MVCTutorial.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -19,20 +20,23 @@ namespace MVCTutorial.Controllers
             List<EmployeeViewModel> employeeVMList = employeeList.Select(x => new EmployeeViewModel
             {
                 Name = x.Name,
-                EmployeeID = x.EmployeeID,
-                DepartmentID = x.DepartmentID,
-                Address = x.Address,
-                DepartmentName = x.Department.DepartmentName
+                EmployeeID = x.EmployeeID
             }).ToList();
 
             return View(employeeVMList);
 
         }
-
-
-        public IActionResult SecondPage()
+        public IActionResult EmployeeDetail(int EmployeeID)
         {
-            return View();
+            Employee employee = _connection.Employee.SingleOrDefault(x => x.EmployeeID == EmployeeID);
+
+            EmployeeViewModel employeeVM = new EmployeeViewModel();
+
+            employeeVM.Name = employee.Name;
+            employeeVM.Address = employee.Address;
+            employeeVM.DepartmentName = employee.Department.DepartmentName;
+
+            return View(employeeVM);
         }
     }
 }

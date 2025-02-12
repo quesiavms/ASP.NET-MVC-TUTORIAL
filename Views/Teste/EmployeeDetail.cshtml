@@ -1,0 +1,27 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model MVCTutorial.Models.EmployeeViewModel
+@{
+    ViewBag.Title = "EmployeeDetail";
+}
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> 
+ <div class="container">
+     <h3>Employee Detail</h3>
+     <table class="table table-striped" style="width:40%">
+         <tr>
+             <td>EmployeeName</td>
+             <td>@Model.Name</td>
+         </tr>
+         <tr>
+             <td>Address</td>
+             <td>@Model.Address</td>
+         </tr>
+         <tr>
+             <td>Department</td>
+             <td>@Model.DepartmentName</td>
+         </tr>
+     </table>
+ </div>

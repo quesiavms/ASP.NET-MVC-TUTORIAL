@@ -3,7 +3,9 @@
     Contém um link com mais informações sobre projetos MVC vazios no ASP.NET.
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
+
 @model IEnumerable<MVCTutorial.Models.EmployeeViewModel>
+
 @{
     /*
     * Bloco de código C# embutido na view.
@@ -22,35 +24,21 @@
 
 <!-- Linkando o arquivo ccs da tabela -->
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> 
-<div class="table table-striped" style="width:60%"> 
-    @if (Model != null && Model.Any())
-    {
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Name</th>
-                        <th>DepartmentID</th>
-                        <th>DepartmentName</th>
-                        <th>Address</th>
-                    </tr>
-                </thead>
-                <tbody>
-                @foreach (var item in Model)
-                {
-                            <tr>
-                                <td>@item.EmployeeID</td>
-                                <td>@item.Name</td>
-                                <td>@item.DepartmentID</td>
-                                <td>@item.DepartmentName</td>
-                                <td>@item.Address</td>
-                            </tr>
-                }
-                </tbody>
-            </table>
-    }
-    else
-    {
-            <p>No data available.</p>
+<div class="container" style="width:30%; margin-top:2%">
+    @if (Model != null && Model.Any()) {
+        <ul class="list-group">
+            @foreach (var item in Model)
+            {
+                <li class="list-group-item">
+                    @* <a class="btn btn-block btn-primary" href="/Teste/EmployeeDetail?EmployeeID=@item.EmployeeID">  *@
+                    @*     @item.Name *@
+                    @* </a> *@
+
+                    @Html.ActionLink(item.Name, "EmployeeDetail", new { EmployeeID = item.EmployeeID }, new {@class="btn btn-block btn-primary"})
+                </li>
+            }
+        </ul>
+    } else {
+        <p>No employees found.</p>
     }
 </div>
