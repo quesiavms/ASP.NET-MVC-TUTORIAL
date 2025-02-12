@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Graph.Models;
 using MVCTutorial.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -38,5 +39,10 @@ namespace MVCTutorial.Controllers
 
             return View(employeeVM);
         }
+
+        public IActionResult TesteRazor()
+        {
+            return View();
+        } 
     }
 }
