@@ -1,4 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using MVCTutorial.Models;
+using System;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Configurando o banco de dados
+builder.Services.AddDbContext<ConnectionDB>(options =>
+    options.UseSqlServer("Server=Quesia_NOTE;Database=MVCTutorial;Integrated Security=True;TrustServerCertificate=True;"));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -15,13 +23,9 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run();

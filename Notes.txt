@@ -1,22 +1,27 @@
 ﻿CONCEITOS MVC
 
 📌 MODEL
-- Responsável pelos dados e regras de negócio
-- Representa as informações do sistema (dados que vêm do banco de dados, cálculos, regras de validação, etc.).
-- Normalmente, contém classes que definem os objetos usados na aplicação.
-- Não tem conhecimento sobre a interface gráfica (View) ou sobre a lógica de controle (Controller).
+- responsável pelos dados e regras de negócio
+- representa as informações do sistema (dados que vêm do banco de dados, cálculos, regras de validação, etc.).
+- contém classes que definem os objetos usados na aplicação, seus atributos são as colunas do banco de dados
 
 📌 CONTROLLER
-- Gerencia a lógica da aplicação e conecta o Model com a View
-- Recebe as requisições do usuário e decide o que fazer.
-- Processa dados do Model e repassa para a View.
-- Retorna uma resposta para o usuário.
-- O Controller pega os dados do Model e os envia para a View
+- gerencia a lógica da aplicação e conecta o Model com a View
+- recebe as requisições do usuário e decide o que fazer.
+- processa dados do Model e repassa para a View.
+- retorna uma resposta para o usuário.
+- o Controller pega os dados do Model e os envia para a View
+- possui metodos com o nome da view e retorna view
 
 📌 VIEW
-- Responsável pela interface com o usuário
-- Exibe os dados para o usuário (HTML + C# usando Razor).
-- Não deve conter regras de negócio, apenas a apresentação da informação.
+- responsável pela interface com o usuário
+- exibe os dados para o usuário (HTML + C#).
+- apenas apresentação da informação.
+	📌 ViewBag
+	- dinamico, nao precisa converter tipo
+	📌 ViewData
+	📌 TempData
+	- pode ser visto apenas uma vez, quando atualizada a pagina, o dado não é mais mostrado
 
 
 
