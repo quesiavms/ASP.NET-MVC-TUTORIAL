@@ -54,26 +54,53 @@ namespace MVCTutorial.Controllers
             return View();
         }
 
-        public IActionResult SaveRecord(EmployeeViewModel model)
+        //public IActionResult SaveRecord(EmployeeViewModel model)
+        //{
+        //    try
+        //    {
+        //        Employee employee = new Employee();
+        //        employee.Name = model.Name;
+        //        employee.Address = model.Address;
+        //        employee.DepartmentID = model.DepartmentID;
+
+        //        _connection.Employee.Add(employee); // adicionando employee no banco
+        //        _connection.SaveChanges(); // salvando os dados
+
+        //        int latestEmpID = employee.EmployeeID;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+
+        //    return RedirectToAction("DepartmentInfo"); // retornando para a tela do EmployeeDetail
+        //}
+
+        [HttpPost]
+        public IActionResult DepartmentInfo(EmployeeViewModel model)
         {
-            try
-            {
-                Employee employee = new Employee();
-                employee.Name = model.Name;
-                employee.Address = model.Address;
-                employee.DepartmentID = model.DepartmentID;
+            List<Department> departmentList = _connection.Department.ToList();
+            ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
 
-                _connection.Employee.Add(employee);
-                _connection.SaveChanges();
+            Employee employee = new Employee();
+            employee.Name = model.Name;
+            employee.Address = model.Address;
+            employee.DepartmentID = model.DepartmentID;
 
-                int latestEmpID = employee.EmployeeID;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _connection.Employee.Add(employee); //adding employee no banco
+            _connection.SaveChanges(); // saving
 
-            return RedirectToAction("DepartmentInfo"); // retornando para a tela do EmployeeDetail
+            int latestEmpID = employee.EmployeeID;
+
+            Sites site = new Sites();
+            site.SiteName = model.SiteName;
+            site.EmployeeID = latestEmpID;
+
+            _connection.Sites.Add(site);
+            _connection.SaveChanges();
+
+
+            return RedirectToAction("DepartmentInfo");
         }
     }
 }

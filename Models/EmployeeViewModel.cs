@@ -9,5 +9,6 @@
 
         //Custom Attributes
         public string DepartmentName {  get; set; }
+        public string SiteName { get; set; }
     }
 }

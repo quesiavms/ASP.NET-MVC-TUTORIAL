@@ -13,6 +13,8 @@ namespace MVCTutorial.Models
 
         public DbSet<Department> Department { get; set; }
 
+        public DbSet<Sites> Sites {  get; set; } 
+
     }
 }
 
