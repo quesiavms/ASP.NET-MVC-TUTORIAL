@@ -1,0 +1,23 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "DepartmentInfo";
+    Layout = null;
+}
+@model MVCTutorial.Models.EmployeeViewModel
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<div class="container" style="width:40%; margin-top:2%">
+    @Html.DropDownListFor(Model => Model.DepartmentID, ViewBag.Department as SelectList, "--select--", new {@class="form-control"})
+    @Html.TextBoxFor(Model => Model.Name, new {@class="form-control", @placeholder = "Name"})
+    @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", @placeholder = "Address" })
+
+    <div class="checkbox">
+        <label>
+            @Html.CheckBoxFor(m => m.Remember)
+            check out this
+        </label>
+    </div>
+    <input type="submit" value="Submit" class="btn btn-block btn-primary" />
+</div>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Graph.Models;
 using MVCTutorial.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -44,5 +45,13 @@ namespace MVCTutorial.Controllers
         {
             return View();
         } 
+
+        public IActionResult DepartmentInfo()
+        {
+            List<Department> departmentList = _connection.Department.ToList();
+            ViewBag.Department = new SelectList(departmentList, "DepartmentID", "DepartmentName");
+
+            return View();
+        }
     }
 }
