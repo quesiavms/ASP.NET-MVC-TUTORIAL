@@ -49,9 +49,31 @@ namespace MVCTutorial.Controllers
         public IActionResult DepartmentInfo()
         {
             List<Department> departmentList = _connection.Department.ToList();
-            ViewBag.Department = new SelectList(departmentList, "DepartmentID", "DepartmentName");
+            ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
 
             return View();
+        }
+
+        public IActionResult SaveRecord(EmployeeViewModel model)
+        {
+            try
+            {
+                Employee employee = new Employee();
+                employee.Name = model.Name;
+                employee.Address = model.Address;
+                employee.DepartmentID = model.DepartmentID;
+
+                _connection.Employee.Add(employee);
+                _connection.SaveChanges();
+
+                int latestEmpID = employee.EmployeeID;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return RedirectToAction("DepartmentInfo"); // retornando para a tela do EmployeeDetail
         }
     }
 }

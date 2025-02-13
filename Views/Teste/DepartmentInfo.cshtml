@@ -9,15 +9,21 @@
 
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 <div class="container" style="width:40%; margin-top:2%">
-    @Html.DropDownListFor(Model => Model.DepartmentID, ViewBag.Department as SelectList, "--select--", new {@class="form-control"})
-    @Html.TextBoxFor(Model => Model.Name, new {@class="form-control", @placeholder = "Name"})
-    @Html.TextBoxFor(Model => Model.Address, new { @class = "form-control", @placeholder = "Address" })
 
-    <div class="checkbox">
-        <label>
-            @Html.CheckBoxFor(m => m.Remember)
-            check out this
-        </label>
-    </div>
+    @using (Html.BeginForm("SaveRecord", "Teste", FormMethod.Post)){
+
+        @Html.DropDownListFor(model => model.DepartmentID, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
+        
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name" })
+        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address" })
+
+    @* <div class="checkbox"> *@
+    @*     <label> *@
+    @*         @Html.CheckBoxFor(m => m.Remember) *@
+    @*         check out this *@
+    @*     </label> *@
+    @* </div> *@
     <input type="submit" value="Submit" class="btn btn-block btn-primary" />
+
+}
 </div>

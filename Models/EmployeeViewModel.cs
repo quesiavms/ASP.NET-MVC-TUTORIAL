@@ -9,6 +9,5 @@
 
         //Custom Attributes
         public string DepartmentName {  get; set; }
-        public bool Remember {  get; set; }
     }
 }
