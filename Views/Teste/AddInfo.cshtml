@@ -1,0 +1,62 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewBag.Title = "AddInfo";
+    Layout = null;
+}
+@model MVCTutorial.Models.EmployeeViewModel
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+
+<div class="container" style="width:40%; margin-top:2%">
+    <form id="myForm">
+            @Html.DropDownListFor(model => model.DepartmentID, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
+
+            @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name" })
+
+            @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address" })
+
+            @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control" , @placeholder = "SiteName"})
+
+            @* <div class="checkbox"> *@
+            @*     <label> *@
+            @*         @Html.CheckBoxFor(m => m.Remember) *@
+            @*         check out this *@
+            @*     </label> *@
+            @* </div> *@
+        <input type="button" value="Submit" class="btn btn-block btn-primary" id="btnSubmit" />
+    </form>
+
+<div>
+        <img src="/Contents/InternetSlowdown_Day.gift"></img>
+</div>
+
+
+
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+
+    $("#btnSubmit").click(function(){
+        debugger
+        var data = $("#myForm").serialize();
+
+        $.ajax({
+            type:"POST",
+            url:"/Teste/AddInfo",
+            data: data,
+            sucess:function(response){
+
+                alert("You are Done!");
+            }
+        })
+        })
+
+    })
+</script>
