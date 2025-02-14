@@ -21,10 +21,18 @@
     Layout = null;
 }
 
+<style>
+    .btn {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 18px;
+    }
+</style>
 
 <!-- Linkando o arquivo ccs da tabela -->
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> 
-<div class="container" style="width:25%; margin-top:2%">
+<div class="container" style="width:40%; margin-top:20px">
+    <h4 style="text-align:center">List Of Employees</h4>
     @if (Model != null && Model.Any()) {
         <ul class="list-group">
             @foreach (var item in Model)

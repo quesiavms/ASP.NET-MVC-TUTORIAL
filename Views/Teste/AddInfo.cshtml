@@ -22,13 +22,10 @@
         margin-top: 20px; 
     }
 
-    #loaderDiv { 
-        display: none;
-    }
 </style>
 
 <div class="container">
-    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="width: 50%; padding: 10px; font-size: 1.2rem; align-self:center">Open Modal</a>
+    <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#myModal" style="width: 50%; padding: 10px; font-size: 1.2rem">Open Modal</a>
 
     <div class="modal fade" id="myModal"">
         <div class="modal-dialog"">
@@ -47,8 +44,8 @@
                         @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control", @placeholder = "SiteName" })
 
                     </form>
-                    <div style="text-align:center;" id="loaderDiv">
-                        <img src="/Contents/InternetSlowdown_Day.gif"/>
+                    <div class="text-center" id="loaderDiv" style="display: none;">
+                        <img src="/Contents/InternetSlowdown_Day.gif" class="img-fluid" style="max-width: 20%;" />
                     </div>
                 </div>
 

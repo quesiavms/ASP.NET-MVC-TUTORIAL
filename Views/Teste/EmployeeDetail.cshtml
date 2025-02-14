@@ -8,21 +8,26 @@
     Layout = null;
 }
 
-<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" /> 
- <div class="container">
-     <h3>Employee Detail</h3>
-     <table class="table table-striped" style="width:40%">
-         <tr>
-             <td>EmployeeName</td>
-             <td>@Model.Name</td>
-         </tr>
-         <tr>
-             <td>Address</td>
-             <td>@Model.Address</td>
-         </tr>
-         <tr>
-             <td>Department</td>
-             <td>@Model.DepartmentName</td>
-         </tr>
-     </table>
- </div>
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container" style="margin-top: 50px;">
+    <h3 class="text-center">Employee Detail</h3>
+    <div class="row justify-content-center">
+
+        <table class="table table-striped" style="width: 50%;">
+                <tr>
+                    <td>Employee Name</td>
+                    <td>@Model.Name</td>
+                </tr>
+                <tr>
+                    <td>Address</td>
+                    <td>@Model.Address</td>
+                </tr>
+                <tr>
+                    <td>Department</td>
+                    <td>@Model.DepartmentName</td>
+                </tr>
+            </table>
+
+    </div>
+</div>
