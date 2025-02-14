@@ -28,35 +28,31 @@
             @* </div> *@
         <input type="button" value="Submit" class="btn btn-block btn-primary" id="btnSubmit" />
     </form>
-
-<div>
-        <img src="/Contents/InternetSlowdown_Day.gift"></img>
-</div>
-
-
-
-
+    <div style="text-align:center;display:none" id = "loaderDiv">
+        <img src="/Contents/InternetSlowdown_Day.gif"></img>
+    </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
     $(document).ready(function() {
+    
+        $("#btnSubmit").click(function(){
+                debugger
+                $("#loaderDiv").show();
 
-    $("#btnSubmit").click(function(){
-        debugger
-        var data = $("#myForm").serialize();
+                var data = $("#myForm").serialize();
 
-        $.ajax({
-            type:"POST",
-            url:"/Teste/AddInfo",
-            data: data,
-            sucess:function(response){
-
-                alert("You are Done!");
-            }
-        })
-        })
-
-    })
+                $.ajax({
+                    type: "POST",
+                    url: "/Teste/AddInfo",
+                    data: data,
+                    success: function(response) {
+                        $("#loaderDiv").hide()
+                        alert("Employeed Added, you are done!");
+                    }
+            });
+        });
+});
 </script>

@@ -36,7 +36,11 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Contents\" />
+	  <Folder Include="wwwroot\Contents\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Include="wwwroot\Contents\InternetSlowdown_Day.gif" />
 	</ItemGroup>
 
 </Project>
