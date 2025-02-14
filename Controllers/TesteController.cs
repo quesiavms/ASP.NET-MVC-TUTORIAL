@@ -90,7 +90,7 @@ namespace MVCTutorial.Controllers
                 employee.DepartmentID = model.DepartmentID;
 
                 _connection.Employee.Add(employee); //adding employee no banco
-                //_connection.SaveChanges(); // saving
+                _connection.SaveChanges(); // saving
 
                 int latestEmpID = employee.EmployeeID;
 
@@ -99,7 +99,7 @@ namespace MVCTutorial.Controllers
                 site.EmployeeID = latestEmpID;
 
                 _connection.Sites.Add(site);
-                //_connection.SaveChanges();
+                _connection.SaveChanges();
 
             }
             catch (Exception ex)
@@ -109,5 +109,35 @@ namespace MVCTutorial.Controllers
 
             return RedirectToAction("AddInfo");
         }
+
+        public IActionResult DeleteEmployee()
+        {
+            List<EmployeeViewModel> listEmp = _connection.Employee.Where(x => x.isDeleted == false)
+                                                                  .Select(x => new EmployeeViewModel
+                                                                  {
+                                                                      Name = x.Name,
+                                                                      DepartmentName = x.Department.DepartmentName,
+                                                                      Address = x.Address,
+                                                                      EmployeeID = x.EmployeeID
+                                                                  }).ToList();
+            ViewBag.EmployeeList = listEmp;
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult DeleteEmployee(int EmployeeID)
+        {
+            bool result = false;
+
+            Employee emp = _connection.Employee.SingleOrDefault(x => x.isDeleted == false && x.EmployeeID == EmployeeID);
+            if(emp != null)
+            {
+                emp.isDeleted = true;
+                _connection.SaveChanges();
+                result = true;
+            }
+            return Json(result);
+        }
+
     }
 }
