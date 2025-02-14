@@ -90,7 +90,7 @@ namespace MVCTutorial.Controllers
                 employee.DepartmentID = model.DepartmentID;
 
                 _connection.Employee.Add(employee); //adding employee no banco
-                _connection.SaveChanges(); // saving
+                //_connection.SaveChanges(); // saving
 
                 int latestEmpID = employee.EmployeeID;
 
@@ -99,7 +99,7 @@ namespace MVCTutorial.Controllers
                 site.EmployeeID = latestEmpID;
 
                 _connection.Sites.Add(site);
-                _connection.SaveChanges();
+                //_connection.SaveChanges();
 
             }
             catch (Exception ex)
