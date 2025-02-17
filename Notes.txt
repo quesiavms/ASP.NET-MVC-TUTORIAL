@@ -23,6 +23,11 @@
 	📌 TempData
 	- pode ser visto apenas uma vez, quando atualizada a pagina, o dado não é mais mostrado
 
+📌 PARTIAL VIEW
+- view que pode ser utilizada em outras views, reutilizada, como menus, rodapés, .....
+- @Html.Partial: nome da partial view como parametro
+- @Html.RenderPartial: nome da partial view e model
+- @Html.PartialAsync: nome do metodo que chama a partial view, public ActionResult ShowPartial(){return PartialView("nome-da-partial-view")}
 
 
 

@@ -30,6 +30,25 @@ namespace MVCTutorial.Controllers
             return View(employeeVMList);
 
         }
+        public IActionResult TesteRazor()
+        {
+            return View();
+        }
+
+        public IActionResult ShowEmployee(int employeeID)
+        {
+            List<EmployeeViewModel> listEmp = _connection.Employee.Where(x => x.isDeleted == false && x.EmployeeID == employeeID)
+                                                      .Select(x => new EmployeeViewModel
+                                                      {
+                                                          Name = x.Name,
+                                                          DepartmentName = x.Department.DepartmentName,
+                                                          Address = x.Address,
+                                                          EmployeeID = x.EmployeeID
+                                                      }).ToList();
+            ViewBag.EmployeeList = listEmp;
+            
+            return PartialView("Partial1");
+        }
         public IActionResult EmployeeDetail(int EmployeeID)
         {
             Employee employee = _connection.Employee.SingleOrDefault(x => x.EmployeeID == EmployeeID);
@@ -38,15 +57,10 @@ namespace MVCTutorial.Controllers
             employeeVM.Name = employee.Name;
             employeeVM.Address = employee.Address;
             employeeVM.DepartmentName = employee.Department.DepartmentName;
-            employeeVM.isDeleted = employee.isDeleted;
 
             return View(employeeVM);
         }
 
-        public IActionResult TesteRazor()
-        {
-            return View();
-        } 
 
         public IActionResult AddInfo()
         {
