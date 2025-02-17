@@ -10,6 +10,7 @@
         @Html.DropDownListFor(model => model.DepartmentID, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
         @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name" })
         @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address" })
+        @Html.TextBoxFor(model => model.SiteName, new { @class = "form-control", @placeholder = "SiteName" })
 
         <a href="#" id="btnSubmit" class="btn btn-success btn-block"> Save</a>
     </form>

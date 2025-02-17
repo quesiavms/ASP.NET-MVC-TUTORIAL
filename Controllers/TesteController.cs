@@ -43,7 +43,8 @@ namespace MVCTutorial.Controllers
                                                           Name = x.Name,
                                                           DepartmentName = x.Department.DepartmentName,
                                                           Address = x.Address,
-                                                          EmployeeID = x.EmployeeID
+                                                          EmployeeID = x.EmployeeID,
+                                                          SiteName = x.Sites.SiteName
                                                       }).ToList();
             ViewBag.EmployeeList = listEmp;
             
@@ -57,6 +58,7 @@ namespace MVCTutorial.Controllers
             employeeVM.Name = employee.Name;
             employeeVM.Address = employee.Address;
             employeeVM.DepartmentName = employee.Department.DepartmentName;
+            employeeVM.SiteName = employee.Sites.SiteName;
 
             return View(employeeVM);
         }
@@ -170,6 +172,7 @@ namespace MVCTutorial.Controllers
                 empViewModel.DepartmentID = emp.DepartmentID;
                 empViewModel.Name = emp.Name;
                 empViewModel.Address = emp.Address;
+                empViewModel.SiteName = emp.Sites.SiteName;
             }
 
             return PartialView("Partial2", empViewModel);
@@ -190,6 +193,7 @@ namespace MVCTutorial.Controllers
                     emp.DepartmentID = model.DepartmentID;
                     emp.Name = model.Name;
                     emp.Address = model.Address;
+                    emp.Sites.SiteName = model.SiteName;
 
                     _connection.SaveChanges();
                 }
@@ -203,6 +207,15 @@ namespace MVCTutorial.Controllers
                     employee.isDeleted = false;
 
                     _connection.Employee.Add(employee);
+                    _connection.SaveChanges();
+
+                    int latestEmpID = employee.EmployeeID;
+
+                    Sites site = new Sites();
+                    site.SiteName = model.SiteName;
+                    site.EmployeeID = latestEmpID;
+
+                    _connection.Sites.Add(site);
                     _connection.SaveChanges();
                 }
             }
