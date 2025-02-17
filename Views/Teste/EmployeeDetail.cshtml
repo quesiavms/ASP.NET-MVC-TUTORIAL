@@ -13,8 +13,7 @@
 <div class="container" style="margin-top: 50px;">
     <h3 class="text-center">Employee Detail</h3>
     <div class="row justify-content-center">
-
-        <table class="table table-striped" style="width: 50%;">
+            <table class="table table-striped" style="width: 50%;">
                 <tr>
                     <td>Employee Name</td>
                     <td>@Model.Name</td>
@@ -27,7 +26,10 @@
                     <td>Department</td>
                     <td>@Model.DepartmentName</td>
                 </tr>
+                <tr>
+                    <td>Deleted</td>
+                    <td>@Model.isDeleted</td>
+                </tr>
             </table>
-
     </div>
 </div>

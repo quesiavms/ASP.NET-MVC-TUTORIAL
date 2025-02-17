@@ -17,7 +17,9 @@ namespace MVCTutorial.Controllers
         }
         public IActionResult Index()
         {
-            List<Employee> employeeList = _connection.Employee.ToList();
+            List<Employee> employeeList = _connection.Employee
+                                          .Where(x => x.isDeleted ==  false)
+                                          .ToList();
 
             List<EmployeeViewModel> employeeVMList = employeeList.Select(x => new EmployeeViewModel
             {
@@ -31,12 +33,12 @@ namespace MVCTutorial.Controllers
         public IActionResult EmployeeDetail(int EmployeeID)
         {
             Employee employee = _connection.Employee.SingleOrDefault(x => x.EmployeeID == EmployeeID);
-
             EmployeeViewModel employeeVM = new EmployeeViewModel();
 
             employeeVM.Name = employee.Name;
             employeeVM.Address = employee.Address;
             employeeVM.DepartmentName = employee.Department.DepartmentName;
+            employeeVM.isDeleted = employee.isDeleted;
 
             return View(employeeVM);
         }

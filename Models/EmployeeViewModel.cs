@@ -15,6 +15,8 @@ namespace MVCTutorial.Models
         [Required(ErrorMessage = "Enter Address")]
         public string Address { get; set; }
 
+        public bool isDeleted { get; set; }
+
         //Custom Attributes
         public string DepartmentName {  get; set; }
         public string SiteName { get; set; }
