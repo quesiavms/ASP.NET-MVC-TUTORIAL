@@ -48,12 +48,13 @@
                         <td>@item.Address</td>
                         <td><a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.EmployeeID)"><i class="fas fa-trash-alt"></i> </a> </td>
                         <td><a href="#" class="btn btn-success" onclick="ShowEmployee(@item.EmployeeID)"><i class="fas fa-eye"></i> </a> </td>
+                        <td><a href="#" class="btn btn-success" onclick="AddEditEmployee(@item.EmployeeID)"><i class="fas fa-edit"></i> </a> </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
-
+    <a href="#" class="btn btn-primary" onclick="AddEditEmployee(0)">New</a>
     <input type="hidden" id="hiddenEmployeeID"/>
 
     <div class="modal fade" id="myModal">
@@ -67,14 +68,26 @@
 
                 <div class="modal-body" id="myModalBodyDiv">
                     <h5>Are you sure you want to delete this employee?</h5>
-
-                    <div style="text-align:center;" id="loaderDiv">
-                        <img src="/Contents/InternetSlowdown_Day.gif" class="img-fluid" style="max-width: 20%;" />
-                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <a href="#" class="btn btn-success" onclick="DeleteEmployee()">Confirm</a>
+                    <a href="#" class="btn btn-success" id="btnDelete" onclick="DeleteEmployee()">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="myModal1">
+        <div class="modal-dialog" style="max-width: 30%; height: 80%; margin-top: 5%;">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h4 class="modal-title">AddEdit Employee</h4>
+                </div>
+
+                <div class="modal-body" id="myModalBodyDiv1">
                 </div>
             </div>
         </div>
@@ -87,10 +100,7 @@
         $("#myModal").modal("show");
     };
 
-    // $(document).ready(function() {
-
         var DeleteEmployee = function(){
-            $("#loaderDiv").show();
 
             var empID = $("#hiddenEmployeeID").val();
 
@@ -99,8 +109,8 @@
                 url: "/Teste/DeleteEmployee", 
                 data: { EmployeeID: empID },
                 success: function(result) {
-                    $("#loaderDiv").hide();
-                    $("modalBodyDelete").show();
+                    $("modalBody").show();
+                    $("#myModal").modal("hide");
                     $("#row_"+ empID).remove();
                     alert("Employee deleted successfully!");
             }
@@ -108,6 +118,7 @@
     }
 
         var ShowEmployee = function(employeeID){
+            $("#btnDelete").hide();
             var url = "/Teste/ShowEmployee?EmployeeID=" + employeeID;
 
             $("#myModalBodyDiv").load(url, function() {
@@ -127,6 +138,12 @@
         //     }
         // });
         // }
-    // });
+        var AddEditEmployee = function(employeeID){
+            var url = window.location.origin + "/Teste/AddEditEmployee?EmployeeID=" + employeeID ;
+
+            $("#myModalBodyDiv1").load(url, function(){
+                $("#myModal1").modal("show");
+            });
+        };
 </script>
 

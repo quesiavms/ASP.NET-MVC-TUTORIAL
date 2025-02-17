@@ -1,0 +1,35 @@
+﻿@model MVCTutorial.Models.EmployeeViewModel
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+<div class="modal-body">
+    <form id="myForm">
+        @Html.HiddenFor(m => m.EmployeeID)
+        @Html.DropDownListFor(model => model.DepartmentID, ViewBag.DepartmentList as SelectList, "--select--", new { @class = "form-control" })
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @placeholder = "Name" })
+        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address" })
+
+        <a href="#" id="btnSubmit" class="btn btn-success btn-block"> Save</a>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#btnSubmit").click(function(){
+
+            var data = $("#myForm").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: "/Teste/AddEditEmployee",
+                data: data,
+                success: function(response) {
+                    $("#myModal").modal("hide");
+                    window.location.href="/Teste/DeleteEmployee"
+                }
+            });
+        });
+    });
+</script>

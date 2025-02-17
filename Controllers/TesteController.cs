@@ -155,5 +155,64 @@ namespace MVCTutorial.Controllers
             return Json(result);
         }
 
+
+        [HttpGet]
+        public IActionResult AddEditEmployee(int employeeID)
+        {
+            EmployeeViewModel empViewModel = new EmployeeViewModel();
+            List<Department> departmentList = _connection.Department.ToList();
+            ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
+
+            if (employeeID > 0)
+            {
+                Employee emp = _connection.Employee.SingleOrDefault(x => x.EmployeeID == employeeID && x.isDeleted == false);
+                empViewModel.EmployeeID = emp.EmployeeID;
+                empViewModel.DepartmentID = emp.DepartmentID;
+                empViewModel.Name = emp.Name;
+                empViewModel.Address = emp.Address;
+            }
+
+            return PartialView("Partial2", empViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult AddEditEmployee(EmployeeViewModel model)
+        {
+            try
+            {
+                List<Department> departmentList = _connection.Department.ToList();
+                ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
+
+                if(model.EmployeeID > 0)
+                {
+                    //update
+                    Employee emp = _connection.Employee.SingleOrDefault(x => x.EmployeeID == model.EmployeeID && x.isDeleted == false);
+                    emp.DepartmentID = model.DepartmentID;
+                    emp.Name = model.Name;
+                    emp.Address = model.Address;
+
+                    _connection.SaveChanges();
+                }
+                else
+                {
+                    //insert
+                    Employee employee = new Employee();
+                    employee.Name = model.Name;
+                    employee.Address = model.Address;
+                    employee.DepartmentID = model.DepartmentID;
+                    employee.isDeleted = false;
+
+                    _connection.Employee.Add(employee);
+                    _connection.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return PartialView("Partial2");
+        }
+
     }
 }
