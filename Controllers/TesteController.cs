@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Graph.Models;
@@ -179,7 +180,7 @@ namespace MVCTutorial.Controllers
         }
 
         [HttpPost]
-        public IActionResult AddEditEmployee(EmployeeViewModel model)
+        public IActionResult UpdateEmployee(EmployeeViewModel model)
         {
             try
             {
@@ -197,7 +198,26 @@ namespace MVCTutorial.Controllers
 
                     _connection.SaveChanges();
                 }
-                else
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return PartialView("Partial2");
+        }
+
+        [HttpPost]
+        public IActionResult InsertEmployee(EmployeeViewModel model)
+        {
+            try
+            {
+                List<Department> departmentList = _connection.Department.ToList();
+                ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
+                Employee emp = _connection.Employee
+                    .SingleOrDefault(x => x.EmployeeID == model.EmployeeID && x.isDeleted == false);
+
+                if (model.EmployeeID == 0)
                 {
                     //insert
                     Employee employee = new Employee();
@@ -223,9 +243,8 @@ namespace MVCTutorial.Controllers
             {
                 throw ex;
             }
-
             return PartialView("Partial2");
         }
-
     }
 }
+

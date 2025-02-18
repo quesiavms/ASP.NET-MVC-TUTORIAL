@@ -48,15 +48,16 @@
                         <td>@item.Address</td>
                         <td><a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.EmployeeID)"><i class="fas fa-trash-alt"></i> </a> </td>
                         <td><a href="#" class="btn btn-success" onclick="ShowEmployee(@item.EmployeeID)"><i class="fas fa-eye"></i> </a> </td>
-                        <td><a href="#" class="btn btn-success" onclick="AddEditEmployee(@item.EmployeeID)"><i class="fas fa-edit"></i> </a> </td>
+                        <td><a href="#" class="btn btn-secundary" onclick="AddEditEmployee(@item.EmployeeID)"><i class="fas fa-edit"></i> </a> </td>
                     </tr>
                 }
             }
         </tbody>
     </table>
+    
     <a href="#" class="btn btn-primary" onclick="AddEditEmployee(0)">New</a>
-    <input type="hidden" id="hiddenEmployeeID"/>
 
+    <input type="hidden" id="hiddenEmployeeID"/>
     <div class="modal fade" id="myModal">
         <div class="modal-dialog" style="max-width: 30%; height: 80%; margin-top: 5%;">
             <div class="modal-content">
@@ -89,6 +90,10 @@
 
                 <div class="modal-body" id="myModalBodyDiv1">
                 </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="InsertEmployee()">Save</button>
+                </div>
             </div>
         </div>
     </div>
@@ -119,30 +124,80 @@
 
         var ShowEmployee = function(employeeID){
             $("#btnDelete").hide();
-            var url = "/Teste/ShowEmployee?EmployeeID=" + employeeID;
+            $.ajax({
+                type: "POST",
+                url: "/Teste/ShowEmployee",
+                data: { EmployeeID: employeeID },
+                success: function(response) {
 
-            $("#myModalBodyDiv").load(url, function() {
-                $("#myModal").modal("show");
+                    $("#myModalBodyDiv").html(response);
+
+                    $("#myModal").modal("show");
+            }
+        });
+        };
+
+    var AddEditEmployee = function(empID){
+        if (empID === 0) { // Caso de insert
+            $("#myModal1 .modal-title").text("Add Employee");
+            $("#myModal1 .btn-primary").attr("onclick", "InsertEmployee()"); 
+            $("#myModal1 .btn-primary").text("Save"); 
+        } else { // Caso de update
+            $("#myModal1 .modal-title").text("Edit Employee");
+            $("#myModal1 .btn-primary").attr("onclick", "UpdateEmployee()"); 
+            $("#myModal1 .btn-primary").text("Update"); 
+        }
+
+        $.ajax({
+            type: "GET",
+            url: window.location.origin + "/Teste/AddEditEmployee",
+            data: { employeeID: empID },
+            success: function(response){
+                $("#myModalBodyDiv1").html(response);
+                $("#myModal1").modal("show");
+            }
+        });
+    };
+
+        var UpdateEmployee = function(){
+            var employeeData = {
+                EmployeeID: $("#EmployeeID").val(),
+                Name: $("#Name").val(),
+                Address: $("#Address").val(),
+                DepartmentID: $("#DepartmentID").val(),
+                SiteName: $("#SiteName").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Teste/UpdateEmployee",
+                data: employeeData,
+                success: function(response){
+                    $("#myModalBodyDiv1").html(response);
+                    $("#myModal1").modal("hide");
+                    location.reload();
+                    alert("Employee update succesfully!!");
+                }
             });
         };
-            
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "/Teste/ShowEmployee",
-        //         data: { EmployeeID: employeeID },
-        //         success: function(response) {
 
-        //             $("#myModalBodyDiv").html(response)
-
-        //             $("#myModal").modal("show");
-        //     }
-        // });
-        // }
-        var AddEditEmployee = function(employeeID){
-            var url = window.location.origin + "/Teste/AddEditEmployee?EmployeeID=" + employeeID ;
-
-            $("#myModalBodyDiv1").load(url, function(){
-                $("#myModal1").modal("show");
+        var InsertEmployee = function(){
+            var employeeData = {
+                EmployeeID: $("#EmployeeID").val(),
+                Name: $("#Name").val(),
+                Address: $("#Address").val(),
+                DepartmentID: $("#DepartmentID").val(),
+                SiteName: $("#SiteName").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Teste/InsertEmployee",
+                data: employeeData,
+                success: function(response){
+                    $("#myModalBodyDiv1").html(response);
+                    $("#myModal1").modal("hide");
+                    location.reload();
+                    alert("Add new Employee succesfully!!");
+                }
             });
         };
 </script>
