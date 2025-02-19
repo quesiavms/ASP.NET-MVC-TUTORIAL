@@ -15,6 +15,10 @@ namespace MVCTutorial.Models
 
         public DbSet<Sites> Sites {  get; set; } 
 
+        public DbSet<SiteUser> SiteUser { get; set; }
+
+        public DbSet<UserRole> UserRole { get; set; }
+
     }
 }
 

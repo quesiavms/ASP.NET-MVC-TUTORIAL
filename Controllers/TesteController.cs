@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -244,6 +245,27 @@ namespace MVCTutorial.Controllers
                 throw ex;
             }
             return PartialView("Partial2");
+        }
+
+        public ActionResult Registration()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult RegisterUser(RegistrationViewModel model)
+        {
+            SiteUser siteUser = new SiteUser();
+            siteUser.UserName = model.UserName;
+            siteUser.EmailId = model.EmailId;
+            siteUser.Password = model.Password;
+            siteUser.Address = model.Address;
+            siteUser.RoleID = 3;
+
+            _connection.SiteUser.Add(siteUser);
+            _connection.SaveChanges();
+
+            return Json(new { success = true, message = "Register done with success!" });
         }
     }
 }
