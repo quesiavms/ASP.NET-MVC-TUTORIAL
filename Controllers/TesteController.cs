@@ -267,6 +267,33 @@ namespace MVCTutorial.Controllers
 
             return Json(new { success = true, message = "Register done with success!" });
         }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult LoginUser(RegistrationViewModel model)
+        {
+            SiteUser user = _connection.SiteUser.SingleOrDefault(x => x.EmailId == model.EmailId && x.Password == model.Password);
+            string result = "Fail";
+            if(user != null)
+            {
+                HttpContext.Session.SetInt32("UserID", user.UserID);
+                HttpContext.Session.SetString("UserName", user.UserName);
+
+                if (user.RoleID == 3)
+                {
+                    result = "General User";
+                }
+                else if(user.RoleID == 1)
+                {
+                    result = "Admin";
+                } 
+            }
+            return Json(result);
+        }
     }
 }
 

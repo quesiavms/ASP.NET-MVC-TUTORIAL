@@ -1,6 +1,6 @@
 ﻿@model MVCTutorial.Models.RegistrationViewModel
 @{
-	ViewBag.Title = "Registration";
+	ViewBag.Title = "Login";
 	Layout = null;
 }
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -8,14 +8,11 @@
 
 <div class="container d-flex justify-content-center align-items-start" style="min-height: 100vh;">
     <form id="myForm" style=" text-align:center; width:40%; margin-top:20px;">
-        <h2 style="text-align-center">Registration</h2>
+        <h2 style="text-align-center">Login</h2>
         <div class="form-group">
-            <div class="col-md-12 mb-3">
-                @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Username" })
-            </div>
 
             <div class="col-md-12 mb-3">
-                @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control" , placeholder = "Email" })
+                @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", placeholder = "Email" })
             </div>
 
             <div class="col-md-12 mb-3">
@@ -23,15 +20,11 @@
             </div>
 
             <div class="col-md-12 mb-3">
-                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" , placeholder = "Address"})
-            </div>
-
-            <div class="col-md-12 mb-3">
-                <a href="#" class="btn btn-primary" onclick="RegisterUser()">Submit</a>
+                <a href="#" class="btn btn-primary" onclick="LoginUser()">Submit</a>
             </div>
 
             <div class="col-md-12 text-center mt-3">
-                <p>Já tem uma conta? <a href="/Teste/Login" class="btn btn-link">Faça login aqui</a></p>
+                <p>Ainda não tem uma conta? <a href="/Teste/Registration" class="btn btn-link">Crie aqui</a></p>
             </div>
         </div>
     </form>
@@ -40,19 +33,24 @@
 @Html.Partial("_footer");
 
 <script>
-    var RegisterUser = function(){
+    var LoginUser = function(){
         var data = $("#myForm").serialize();
 
         $.ajax({
             type: "POST",
-            url:"/Teste/RegisterUser",
+            url:"/Teste/LoginUser",
             data: data,
             success: function(response){
-                if (response.success) {
-                alert(response.message);  // mensagem de sucesso
-                $("#myForm")[0].reset(); // Limpar os campos do formulário
+                if (response == 'Fail') {
+                alert("Login Error");  // mensagem de sucesso
+                window.location.href="/Teste/Login"
+                }else if (response == "Admin"){
+                    window.location.href="/Teste/DeleteEmployee" //redirecionando pras paginas admin
+                }else{
+                    window.location.href="/Teste/Index" //redirecionando pras paginas user default
                 }
             }
          });
     }
 </script>
+
