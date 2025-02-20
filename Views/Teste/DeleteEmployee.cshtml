@@ -28,6 +28,13 @@
     #loaderDiv {
         display: none;
     }
+
+    .options-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 999;
+    }
 </style>
 
 <div class="container" style="width: 40%; margin-top:2%">
@@ -99,6 +106,8 @@
     </div>
     @Html.Partial("_footer")
 </div>
+@Html.Partial("_options", new { @class = "options-container" })
+
 
 <script>
     var ConfirmDelete = function(EmployeeID){

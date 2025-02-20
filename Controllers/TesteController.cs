@@ -294,6 +294,17 @@ namespace MVCTutorial.Controllers
             }
             return Json(result);
         }
+
+        public IActionResult Menu()
+        {
+            return View();
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Menu");
+        }
     }
 }
 

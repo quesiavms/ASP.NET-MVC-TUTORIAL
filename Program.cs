@@ -24,7 +24,7 @@ builder.Services.AddSession(options =>
 var app = builder.Build();
 
 // quando compilado direciona para este endpoint
-app.MapGet("/", () => Results.Redirect("/Teste/Login"));
+app.MapGet("/", () => Results.Redirect("/Teste/Menu"));
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
