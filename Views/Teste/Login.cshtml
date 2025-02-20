@@ -1,10 +1,11 @@
-﻿@model MVCTutorial.Models.RegistrationViewModel
+﻿@model MVCTutorial.Models.LoginViewModel
 @{
 	ViewBag.Title = "Login";
 	Layout = null;
 }
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 
 <div class="container d-flex justify-content-center align-items-start" style="min-height: 100vh;">
     <form id="myForm" style=" text-align:center; width:40%; margin-top:20px;">
@@ -13,10 +14,12 @@
 
             <div class="col-md-12 mb-3">
                 @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control", placeholder = "Email" })
+                @Html.ValidationMessageFor(m => m.EmailId, "")
             </div>
 
             <div class="col-md-12 mb-3">
                 @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                @Html.ValidationMessageFor(m => m.Password, "")
             </div>
 
             <div class="col-md-12 mb-3">
@@ -35,6 +38,12 @@
 <script>
     var LoginUser = function(){
         var data = $("#myForm").serialize();
+        
+        if(!$("#myForm").valid())
+        {
+            return false;
+
+        }
 
         $.ajax({
             type: "POST",
@@ -42,7 +51,7 @@
             data: data,
             success: function(response){
                 if (response == 'Fail') {
-                alert("Login Error");  // mensagem de sucesso
+                alert("Please Enter validate data");
                 window.location.href="/Teste/Login"
                 }else if (response == "Admin"){
                     window.location.href="/Teste/DeleteEmployee" //redirecionando pras paginas admin

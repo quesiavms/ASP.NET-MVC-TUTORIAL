@@ -274,7 +274,7 @@ namespace MVCTutorial.Controllers
         }
 
         [HttpPost]
-        public JsonResult LoginUser(RegistrationViewModel model)
+        public JsonResult LoginUser(LoginViewModel model)
         {
             SiteUser user = _connection.SiteUser.SingleOrDefault(x => x.EmailId == model.EmailId && x.Password == model.Password);
             string result = "Fail";
