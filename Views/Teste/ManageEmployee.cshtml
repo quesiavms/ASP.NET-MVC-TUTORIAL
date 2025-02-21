@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "DeleteEmployee";
+    ViewBag.Title = "ManageEmployee";
     Layout = null;
 }
 
@@ -118,7 +118,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Teste/DeleteEmployee", 
+                url: "/Teste/DeleteEmployee",
                 data: { EmployeeID: empID },
                 success: function(result) {
                     $("modalBody").show();

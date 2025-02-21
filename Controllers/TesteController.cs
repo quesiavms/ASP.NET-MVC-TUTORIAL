@@ -17,6 +17,7 @@ namespace MVCTutorial.Controllers
         {
             _connection = connection;
         }
+
         public IActionResult Index()
         {
             List<Employee> employeeList = _connection.Employee
@@ -31,10 +32,6 @@ namespace MVCTutorial.Controllers
 
             return View(employeeVMList);
 
-        }
-        public IActionResult TesteRazor()
-        {
-            return View();
         }
 
         public IActionResult ShowEmployee(int employeeID)
@@ -52,6 +49,7 @@ namespace MVCTutorial.Controllers
             
             return PartialView("Partial1");
         }
+
         public IActionResult EmployeeDetail(int EmployeeID)
         {
             Employee employee = _connection.Employee.SingleOrDefault(x => x.EmployeeID == EmployeeID);
@@ -65,72 +63,7 @@ namespace MVCTutorial.Controllers
             return View(employeeVM);
         }
 
-
-        public IActionResult AddInfo()
-        {
-            List<Department> departmentList = _connection.Department.ToList();
-            ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
-
-            return View();
-        }
-
-        //public IActionResult SaveRecord(EmployeeViewModel model)
-        //{
-        //    try
-        //    {
-        //        Employee employee = new Employee();
-        //        employee.Name = model.Name;
-        //        employee.Address = model.Address;
-        //        employee.DepartmentID = model.DepartmentID;
-
-        //        _connection.Employee.Add(employee); // adicionando employee no banco
-        //        _connection.SaveChanges(); // salvando os dados
-
-        //        int latestEmpID = employee.EmployeeID;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-
-        //    return RedirectToAction("AddInfo"); // retornando para a tela do AddInfo
-        //}
-
-        [HttpPost]
-        public IActionResult AddInfo(EmployeeViewModel model)
-        {
-            try
-            {
-                List<Department> departmentList = _connection.Department.ToList();
-                ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
-
-                Employee employee = new Employee();
-                employee.Name = model.Name;
-                employee.Address = model.Address;
-                employee.DepartmentID = model.DepartmentID;
-
-                _connection.Employee.Add(employee); //adding employee no banco
-                _connection.SaveChanges(); // saving
-
-                int latestEmpID = employee.EmployeeID;
-
-                Sites site = new Sites();
-                site.SiteName = model.SiteName;
-                site.EmployeeID = latestEmpID;
-
-                _connection.Sites.Add(site);
-                _connection.SaveChanges();
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
-            return RedirectToAction("AddInfo");
-        }
-
-        public IActionResult DeleteEmployee()
+        public IActionResult ManageEmployee()
         {
             List<EmployeeViewModel> listEmp = _connection.Employee.Where(x => x.isDeleted == false)
                                                                   .Select(x => new EmployeeViewModel
@@ -158,7 +91,6 @@ namespace MVCTutorial.Controllers
             }
             return Json(result);
         }
-
 
         [HttpGet]
         public IActionResult AddEditEmployee(int employeeID)
