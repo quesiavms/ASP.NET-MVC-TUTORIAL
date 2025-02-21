@@ -29,16 +29,11 @@
         display: none;
     }
 
-    .options-container {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        z-index: 999;
-    }
 </style>
 
-<div class="container" style="width: 40%; margin-top:2%">
+@Html.Partial("_options")
 
+<div class="container" style="width: 40%; margin-top:2%">
     <table class="table table-responsive">
         <tr>
             <th>Name</th>
@@ -104,9 +99,11 @@
             </div>
         </div>
     </div>
-    @Html.Partial("_footer")
 </div>
-@Html.Partial("_options", new { @class = "options-container" })
+
+<footer>
+    @Html.Partial("_footer")
+</footer>
 
 
 <script>

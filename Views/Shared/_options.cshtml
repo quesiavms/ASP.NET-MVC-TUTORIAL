@@ -5,8 +5,19 @@
 
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 
-<div class="d-flex justify-content-end w-100 p-3">
-    <ul class="d-flex list-unstyled gap-3">
+<style>
+    .options-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 999;
+        padding: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="options-container">
+    <ul class="d-flex list-unstyled gap-3" ">
         <li><a href="/Teste/Menu">Home</a></li>
         <li><a href="/Teste/Logout">Logout</a></li>
     </ul>

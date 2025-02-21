@@ -303,7 +303,7 @@ namespace MVCTutorial.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return RedirectToAction("Menu");
+            return RedirectToAction("Login");
         }
     }
 }
