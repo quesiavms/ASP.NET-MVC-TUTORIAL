@@ -1,0 +1,26 @@
+﻿<table class="table table-bordered">
+
+	@if (ViewBag.roleList != null)
+	{
+
+		foreach (var item in ViewBag.roleList)
+		{
+			<tr>
+				<td><b>Name</b></td>
+				<td>@item.UserName</td>
+			</tr>
+			<tr>
+				<td><b>Email</b></td>
+				<td>@item.EmailId</td>
+			</tr>
+			<tr>
+				<td><b>Address</b></td>
+				<td>@item.Address</td>
+			</tr>
+			<tr>
+				<td><b>Role</b></td>
+				<td>@item.RoleName</td>
+			</tr>
+		}
+	}
+</table>

@@ -1,0 +1,420 @@
+﻿@model MVCTutorial.Models.EmployeeUserViewModel
+
+@{
+    ViewBag.Title = "EmployeeUser";
+    Layout = null;
+}
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<style>
+    body {
+        background-color: #f4f6f9;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+    }
+
+    .container {
+        width: 90%;
+        margin-top: 20px;
+    }
+
+    .split-container {
+        display: flex;
+        gap: 20px;
+    }
+
+    .panel {
+        flex: 1;
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    }
+</style>
+
+@Html.Partial("_options")
+
+<div class="container">
+    <div class="split-container">
+        <!-- Employees Management -->
+        <div class="panel">
+            <h3>Manage Employees</h3>
+            <table class="table table-responsive">
+                <tr>
+                    <!-- nome das colunas -->
+                    <th>Name</th> 
+                    <th>Department</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+                <tbody>
+                    @if (Model.Employee != null)
+                    {
+                        foreach (var item in Model.Employee)
+                        {
+                            <!-- preenchendo as linhas -->
+                            <tr id="row_@item.EmployeeID">
+                                <td>@item.Name</td>
+                                <td>@item.DepartmentName</td>
+                                <td>@item.Address</td>
+                                <td>
+                                    <a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.EmployeeID)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success" onclick="ShowEmployee(@item.EmployeeID)">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-secondary" onclick="AddEditEmployee(@item.EmployeeID)">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+            <a href="#" class="btn btn-primary" onclick="AddEditEmployee(0)">New Employee</a>
+        </div>
+        <input type="hidden" id="hiddenEmployeeID" />
+        <div class="modal fade" id="myModal">
+            <div class="modal-dialog" style="max-width: 30%; height: 80%; margin-top: 5%;">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h4 class="modal-title">Employee</h4>
+                    </div>
+
+                    <div class="modal-body" id="myModalBodyDiv">
+                        <h5>Are you sure you want to delete this employee?</h5>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <a href="#" class="btn btn-success" id="btnDelete" onclick="DeleteEmployee()">Confirm</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="myModal1">
+            <div class="modal-dialog" style="max-width: 30%; height: 80%; margin-top: 5%;">
+                <div class="modal-content">
+
+                    <div class="modal-header">
+                        <a href="#" class="close" data-dismiss="modal">&times;</a>
+                        <h4 class="modal-title">AddEdit Employee</h4>
+                    </div>
+
+                    <div class="modal-body" id="myModalBodyDiv1">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-success" onclick="InsertEmployee()">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Site Users Management -->
+        <div class="panel">
+            <h3>Manage Site Users</h3>
+            <table class="table table-responsive">
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+                <tbody>
+                    @if (Model.SiteUser != null)
+                    {
+                        foreach (var item in Model.SiteUser)
+                        {
+                            <tr id="userRow_@item.UserID">
+                                <td>@item.UserName</td>
+                                <td>@item.EmailId</td>
+                                <td>@item.Address</td>
+                                <td>@item.RoleName</td>
+                                <td>
+                                    <a href="#" class="btn btn-danger" onclick="ConfirmDeleteUser(@item.UserID)">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success" onclick="ShowUser(@item.UserID)">
+                                        <i class="fas fa-eye"></i>
+                                    </a>
+                                            <a href="#" class="btn btn-secondary" onclick="AddEditUser(@item.UserID)">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+
+            <a href="#" class="btn btn-primary" onclick="AddEditUser(0)">New User</a>
+
+            <input type="hidden" id="hiddenSiteUserID" />
+            <div class="modal fade" id="myModal3">
+                <div class="modal-dialog" style="max-width: 30%; height: 80%; margin-top: 5%;">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h4 class="modal-title">User</h4>
+                        </div>
+
+                        <div class="modal-body" id="myModalBodyDiv2">
+                            <h5>Are you sure you want to delete this user?</h5>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <a href="#" class="btn btn-success" id="btnDeleteUser" onclick="DeleteUser()">Confirm</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="myModal4">
+                <div class="modal-dialog" style="max-width: 30%; height: 80%; margin-top: 5%;">
+                    <div class="modal-content">
+
+                        <div class="modal-header">
+                            <a href="#" class="close" data-dismiss="modal">&times;</a>
+                            <h4 class="modal-title">AddEdit User</h4>
+                        </div>
+
+                        <div class="modal-body" id="myModalBodyDiv3">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-success" onclick="InsertUser()">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    @Html.Partial("_footer")
+</footer>
+
+<script>
+    var ConfirmDelete = function(EmployeeID){
+        $("#hiddenEmployeeID").val(EmployeeID);
+        $("#myModal").modal("show");
+    };
+
+        var DeleteEmployee = function(){
+
+            var empID = $("#hiddenEmployeeID").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Teste/DeleteEmployee",
+                data: { EmployeeID: empID },
+                success: function(result) {
+                    $("modalBody").show();
+                    $("#myModal").modal("hide");
+                    $("#row_"+ empID).remove();
+                    alert("Employee deleted successfully!");
+            }
+        });
+    }
+
+        var ShowEmployee = function(employeeID){
+            $("#btnDelete").hide();
+            $.ajax({
+                type: "POST",
+                url: "/Teste/ShowEmployee",
+                data: { EmployeeID: employeeID },
+                success: function(response) {
+
+                    $("#myModalBodyDiv").html(response);
+
+                    $("#myModal").modal("show");
+            }
+        });
+        };
+
+    var AddEditEmployee = function(empID){
+        if (empID === 0) { // Caso de insert
+            $("#myModal1 .modal-title").text("Add Employee");
+            $("#myModal1 .btn-success").attr("onclick", "InsertEmployee()");
+            $("#myModal1 .btn-success").text("Save");
+        } else { // Caso de update
+            $("#myModal1 .modal-title").text("Edit Employee");
+            $("#myModal1 .btn-success").attr("onclick", "UpdateEmployee()");
+            $("#myModal1 .btn-success").text("Update");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: window.location.origin + "/Teste/AddEditEmployee",
+            data: { employeeID: empID },
+            success: function(response){
+                $("#myModalBodyDiv1").html(response);
+                $("#myModal1").modal("show");
+            }
+        });
+    };
+
+        var UpdateEmployee = function(){
+            var employeeData = {
+                EmployeeID: $("#EmployeeID").val(),
+                Name: $("#Name").val(),
+                Address: $("#Address").val(),
+                DepartmentID: $("#DepartmentID").val(),
+                SiteName: $("#SiteName").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Teste/UpdateEmployee",
+                data: employeeData,
+                success: function(response){
+                    $("#myModalBodyDiv1").html(response);
+                    $("#myModal1").modal("hide");
+                    location.reload();
+                    alert("Employee update succesfully!!");
+                }
+            });
+        };
+
+        var InsertEmployee = function(){
+            var employeeData = {
+                EmployeeID: $("#EmployeeID").val(),
+                Name: $("#Name").val(),
+                Address: $("#Address").val(),
+                DepartmentID: $("#DepartmentID").val(),
+                SiteName: $("#SiteName").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Teste/InsertEmployee",
+                data: employeeData,
+                success: function(response){
+                    $("#myModalBodyDiv1").html(response);
+                    $("#myModal1").modal("hide");
+                    location.reload();
+                    alert("Add new Employee succesfully!!");
+                }
+            });
+        };
+
+        //tudo com userSite
+
+        var ConfirmDeleteUser = function(UserID){
+        $("#hiddenSiteUserID").val(UserID);
+        $("#myModal3").modal("show");
+    };
+
+        var DeleteUser = function(){
+
+            var userID = $("#hiddenSiteUserID").val();
+
+            $.ajax({
+                type: "POST",
+                url: "/Teste/DeleteUser",
+                data: { UserID: userID },
+                success: function(result) {
+                    $("modalBody2").show();
+                    $("#myModal3").modal("hide");
+                    location.reload();
+                    $("#row_"+ UserID).remove();
+                    alert("User deleted successfully!");
+            }
+        });
+    }
+
+        var ShowUser = function(UserID){
+            $("#btnDeleteUser").hide();
+            $.ajax({
+                type: "POST",
+                url: "/Teste/ShowUser",
+                data: { UserID: UserID },
+                success: function(response) {
+
+                    $("#myModalBodyDiv2").html(response);
+
+                    $("#myModal3").modal("show");
+            }
+        });
+        };
+
+    var AddEditUser = function(UserID){
+        if (UserID === 0) { // Caso de insert
+            $("#myModal4 .modal-title").text("Add User");
+            $("#myModal4 .btn-success").attr("onclick", "InsertUser()");
+            $("#myModal4 .btn-success").text("Save");
+        } else { // Caso de update
+            $("#myModal4 .modal-title").text("Edit User");
+            $("#myModal4 .btn-success").attr("onclick", "UpdateUser()");
+            $("#myModal4 .btn-success").text("Update");
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "/Teste/AddEditUser",
+            data: { UserID: UserID },
+            success: function(response){
+                $("#myModalBodyDiv3").html(response);
+                $("#myModal4").modal("show");
+            }
+        });
+    };
+
+        var UpdateUser = function(){
+             var UserData = {
+                UserID: $("#UserID").val(),
+                UserName: $("#UserName").val(),
+                EmailId: $("#EmailId").val(),
+                Password: $("#Password").val(),
+                Address: $("#Address").val(),
+                RoleID: $("#RoleID").val(),
+                RoleName: $("#RoleName").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Teste/UpdateUser",
+                data: UserData,
+                success: function(response){
+                    $("#myModalBodyDiv3").html(response);
+                    $("#myModal1").modal("hide");
+                    location.reload();
+                    alert("User update succesfully!!");
+                }
+            });
+        };
+
+        var InsertUser = function(){
+            var UserData = {
+                UserID: $("#UserID").val(),
+                UserName: $("#UserName").val(),
+                EmailId: $("#EmailId").val(),
+                Password: $("#Password").val(),
+                Address: $("#Address").val(),
+                RoleID: $("#RoleID").val(),
+                RoleName: $("#RoleName").val()
+            };
+            $.ajax({
+                type: "POST",
+                url: "/Teste/InsertUser",
+                data: UserData,
+                success: function(response){
+                    $("#myModalBodyDiv3").html(response);
+                    $("#myModal4").modal("hide");
+                    location.reload();
+                    alert("Add new User succesfully!!");
+                }
+            });
+        };
+</script>

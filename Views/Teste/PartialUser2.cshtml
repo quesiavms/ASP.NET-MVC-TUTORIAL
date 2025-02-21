@@ -1,0 +1,42 @@
+﻿@model MVCTutorial.Models.SiteUserViewModel
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+<div class="modal-body">
+    <form id="myForm">
+        @Html.HiddenFor(m => m.UserID)
+        @Html.DropDownListFor(model => model.RoleID, ViewBag.roleList as SelectList, "--select--", new { @class = "form-control" })
+        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Username" })
+        @Html.TextBoxFor(model => model.EmailId, new { @class = "form-control", @placeholder = "Email" })
+        @Html.TextBoxFor(model => model.Address, new { @class = "form-control", @placeholder = "Address" })
+        @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @placeholder = "Password" })
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $("#btnSubmit").click(function(){
+
+                var data = {
+                            UserID: $("#UserID").val(),
+                            UserName: $("#UserName").val(),
+                            EmailId: $("#EmailId").val(),
+                            Address: $("#Address").val(),
+                            Password: $("#Password").val(),
+                            RoleID: $("#RoleID").val()
+                        };
+
+            $.ajax({
+                type: "POST",
+                url: "/Teste/AddEditUser",
+                data: data,
+                success: function(response) {
+                    $("#myModal4").modal("hide");
+                    window.location.href="/Teste/EmployeeUser"
+                }
+            });
+        });
+    });
+</script>

@@ -57,7 +57,10 @@
                 window.location.href="/Teste/Login"
                 }else if (response == "Admin"){
                     window.location.href="/Teste/ManageEmployee" //redirecionando pras paginas admin
-                }else{
+                }else if(response == "SuperAdmin"){
+                    window.location.href="/Teste/EmployeeUser" // redirecionando para paginas de superadmin
+                }
+                else{
                     window.location.href="/Teste/Index" //redirecionando pras paginas user default
                 }
             }
