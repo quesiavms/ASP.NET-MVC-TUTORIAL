@@ -19,6 +19,8 @@ namespace MVCTutorial.Models
 
         public DbSet<UserRole> UserRole { get; set; }
 
+        public DbSet<ImageStore> ImageStore { get; set; }
+
     }
 }
 

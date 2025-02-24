@@ -13,16 +13,18 @@ namespace MVCTutorial.Controllers
     public class TesteController : Controller
     {
         private readonly ConnectionDB _connection;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public TesteController(ConnectionDB connection)
+        public TesteController(ConnectionDB connection, IWebHostEnvironment webHostEnvironment)
         {
             _connection = connection;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
             List<Employee> employeeList = _connection.Employee
-                                          .Where(x => x.isDeleted ==  false)
+                                          .Where(x => x.isDeleted == false)
                                           .ToList();
 
             List<EmployeeViewModel> employeeVMList = employeeList.Select(x => new EmployeeViewModel
@@ -47,7 +49,7 @@ namespace MVCTutorial.Controllers
                                                           SiteName = x.Sites.SiteName
                                                       }).ToList();
             ViewBag.EmployeeList = listEmp;
-            
+
             return PartialView("Partial1");
         }
 
@@ -84,7 +86,7 @@ namespace MVCTutorial.Controllers
             bool result = false;
 
             Employee emp = _connection.Employee.SingleOrDefault(x => x.isDeleted == false && x.EmployeeID == EmployeeID);
-            if(emp != null)
+            if (emp != null)
             {
                 emp.isDeleted = true;
                 _connection.SaveChanges();
@@ -121,7 +123,7 @@ namespace MVCTutorial.Controllers
                 List<Department> departmentList = _connection.Department.ToList();
                 ViewBag.DepartmentList = new SelectList(departmentList, "DepartmentID", "DepartmentName");
 
-                if(model.EmployeeID > 0)
+                if (model.EmployeeID > 0)
                 {
                     //update
                     Employee emp = _connection.Employee.SingleOrDefault(x => x.EmployeeID == model.EmployeeID && x.isDeleted == false);
@@ -211,7 +213,7 @@ namespace MVCTutorial.Controllers
         {
             SiteUser user = _connection.SiteUser.SingleOrDefault(x => x.EmailId == model.EmailId && x.Password == model.Password);
             string result = "Fail";
-            if(user != null)
+            if (user != null)
             {
                 HttpContext.Session.SetInt32("UserID", user.UserID);
                 HttpContext.Session.SetString("UserName", user.UserName);
@@ -220,11 +222,11 @@ namespace MVCTutorial.Controllers
                 {
                     result = "General User";
                 }
-                else if(user.RoleID == 1)
+                else if (user.RoleID == 1)
                 {
                     result = "Admin";
                 }
-                else if(user.RoleID == 2)
+                else if (user.RoleID == 2)
                 {
                     result = "SuperAdmin";
                 }
@@ -253,15 +255,15 @@ namespace MVCTutorial.Controllers
                                                     Address = x.Address,
                                                 }).ToList();
             var SiteUser = _connection.SiteUser.Select(x => new SiteUserViewModel
-                                                {
-                                                    UserID = x.UserID,
-                                                    UserName = x.UserName,
-                                                    EmailId = x.EmailId,
-                                                    Address = x.Address,
-                                                    Password = x.Password,
-                                                    RoleID = x.RoleID,
-                                                    RoleName = x.UserRole.RoleName
-                                                }).ToList();
+            {
+                UserID = x.UserID,
+                UserName = x.UserName,
+                EmailId = x.EmailId,
+                Address = x.Address,
+                Password = x.Password,
+                RoleID = x.RoleID,
+                RoleName = x.UserRole.RoleName
+            }).ToList();
 
             var viewModel = new EmployeeUserViewModel
             {
@@ -386,6 +388,43 @@ namespace MVCTutorial.Controllers
             }
             return PartialView("PartialUser2");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadImage([FromForm] ProductViewModel model)
+        {
+            var file = model.ImageFile;
+            byte[] imageByte;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await file.CopyToAsync(memoryStream);
+                imageByte = memoryStream.ToArray();
+            }
+
+            var img = new ImageStore
+            {
+                ImageName = file.FileName,
+                ImageByte = imageByte,
+                ImagePath = Path.Combine("UploadedImage", file.FileName),
+                IsDeleted = false
+            };
+
+            _connection.ImageStore.Add(img);
+            await _connection.SaveChangesAsync();
+
+            return Json(new { imgID = img.ImageID });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ImageRetrieve(int imgID)
+        {
+            var img = await _connection.ImageStore.FindAsync(imgID);
+            if (img == null || img.ImageByte == null)
+                return NotFound();
+
+            return File(img.ImageByte, "image/jpeg");
+        }
     }
 }
+
 
