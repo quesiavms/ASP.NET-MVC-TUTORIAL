@@ -10,6 +10,7 @@
 ![jQuery](https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white)
 ![AJAX](https://img.shields.io/badge/AJAX-0078D4?style=for-the-badge&logo=ajax&logoColor=white)
 ![Entity Framework](https://img.shields.io/badge/Entity%20Framework-7B8C2F?style=for-the-badge&logo=entity-framework&logoColor=white)
+![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
 ---
 ### Conecte-se Comigo
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/quesiasilva/)
