@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Linq.Expressions;
 using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
@@ -14,11 +15,13 @@ namespace MVCTutorial.Controllers
     {
         private readonly ConnectionDB _connection;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly ILogger<TesteController> _logger;
 
-        public TesteController(ConnectionDB connection, IWebHostEnvironment webHostEnvironment)
+        public TesteController(ConnectionDB connection, IWebHostEnvironment webHostEnvironment, ILogger<TesteController> logger)
         {
             _connection = connection;
             _webHostEnvironment = webHostEnvironment;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -390,35 +393,48 @@ namespace MVCTutorial.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UploadImage([FromForm] ProductViewModel model)
+        [RequestSizeLimit(104857600)] // Exemplo: 100 MB
+        [Route("[controller]/Menu/UploadImage")]
+        public IActionResult UploadImage([FromForm] ProductViewModel model)
         {
-            var file = model.ImageFile;
-            byte[] imageByte;
-
-            using (var memoryStream = new MemoryStream())
+            try
             {
-                await file.CopyToAsync(memoryStream);
-                imageByte = memoryStream.ToArray();
+                var file = model.ImageFile;
+                if (file == null)
+                    return BadRequest("Nenhum arquivo foi enviado.");
+
+                byte[] imageByte;
+                using (var memoryStream = new MemoryStream())
+                {
+                    file.CopyToAsync(memoryStream);
+                    imageByte = memoryStream.ToArray();
+                }
+
+                var img = new ImageStore
+                {
+                    ImageName = file.FileName,
+                    ImageByte = imageByte,
+                    ImagePath = Path.Combine("UploadedImage", file.FileName),
+                    IsDeleted = false
+                };
+
+                _connection.ImageStore.Add(img);
+                 _connection.SaveChanges();
+
+                return Json(new { imgID = img.ImageID });
             }
-
-            var img = new ImageStore
+            catch (Exception ex)
             {
-                ImageName = file.FileName,
-                ImageByte = imageByte,
-                ImagePath = Path.Combine("UploadedImage", file.FileName),
-                IsDeleted = false
-            };
-
-            _connection.ImageStore.Add(img);
-            await _connection.SaveChangesAsync();
-
-            return Json(new { imgID = img.ImageID });
+                _logger.LogError(ex, "Erro ao fazer upload da imagem");
+                return StatusCode(500, "Erro interno no servidor.");
+            }
         }
 
         [HttpGet]
-        public async Task<IActionResult> ImageRetrieve(int imgID)
+        [Route("[controller]/Menu/ImageRetrieve")]
+        public IActionResult ImageRetrieve(int imgID)
         {
-            var img = await _connection.ImageStore.FindAsync(imgID);
+            var img = _connection.ImageStore.FirstOrDefault(x => x.ImageID == imgID);
             if (img == null || img.ImageByte == null)
                 return NotFound();
 

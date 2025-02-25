@@ -27,6 +27,13 @@ builder.Services.AddCors(options =>
         builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 });
 
+// Configurando os providers de log
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+builder.Services.AddControllersWithViews();
+
 var app = builder.Build();
 
 // quando compilado direciona para este endpoint
@@ -49,4 +56,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.UseCors();
+
 app.Run();

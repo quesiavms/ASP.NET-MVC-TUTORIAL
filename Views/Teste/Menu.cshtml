@@ -36,7 +36,7 @@
                 <a href="#" id="clearIcon" onclick="ClearPreview()"><i class=" fas fa-trash-alt"></i></a>
                 <span id="description"></span>
             </div>
-            <a href="#" class="btn btn-secondary" onclick="UploadImage()">Upload</a>
+            <button class="btn btn-secondary" onclick="UploadImage()">Upload</button>
         <div class="col-md-2 img-thumbnail" id="UploadedImage">
         </div>
         </div>
@@ -67,7 +67,7 @@
             image.onload = function(){
                 var height = this.height;
                 var width = this.width;
-                var type = this.type;
+                var type = file.type;
                 var size = (file.size / 1024).toFixed(2) + " KB";
 
                 $("#targetImg").attr('src',_file.target.result);
@@ -81,6 +81,9 @@
         $("#imageBrowse").val('');
         $("#description").text('');
         $("#imgPreview").hide();
+
+
+       console.log("cheguei aqui");
     }
 
     var UploadImage = function () {

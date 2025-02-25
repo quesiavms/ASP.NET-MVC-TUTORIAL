@@ -7,10 +7,10 @@ namespace MVCTutorial.Models
         [Table("ImageStore")]
         public class ImageStore
         {
-            //public ImageStore()
-            //{
-            //    Products = new HashSet<Product>();
-            //}
+        public ImageStore()
+        {
+            Products = new HashSet<Product>();
+        }
 
             [Key]
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -20,7 +20,7 @@ namespace MVCTutorial.Models
             public string ImagePath { get; set; }
             public bool? IsDeleted { get; set; }
 
-            //public virtual ICollection<Product> Products { get; set; }
+            public virtual ICollection<Product> Products { get; set; }
         }
 }
 
