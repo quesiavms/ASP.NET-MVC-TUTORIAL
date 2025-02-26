@@ -1,4 +1,6 @@
-﻿@{
+﻿@model MVCTutorial.Models.EmployeeViewModel;
+
+@{
     ViewBag.Title = "Menu";
     Layout = null;
 }
@@ -10,10 +12,10 @@
 
 <style>
     #targetImg {
-        max-width: 100%;
-        max-height: 300px;
-        width: auto;
-        height: auto;
+    max-width: 100%;
+    max-height: 300px;
+    width: auto;
+    height: auto;
     }
 </style>
 
@@ -24,25 +26,65 @@
 </ul>
 
 <div class="col-md-6" style="width: 50%;">
-        <div class="btn btn-primary">
-            <input type="file" id="imageBrowse" />
+    <div class="btn btn-primary">
+        <input type="file" id="imageBrowse" />
+    </div>
+
+    <hr />
+
+    <div id="imgPreview" class="img-thumbnail" style="display: none">
+        <img class="img-responsive" id="targetImg" />
+        <div class="caption">
+            <a href="#" id="clearIcon" onclick="ClearPreview()"><i class=" fas fa-trash-alt"></i></a>
+            <span id="description"></span>
         </div>
-
-        <hr />
-
-        <div id="imgPreview" class="img-thumbnail" style="display: none">
-            <img class="img-responsive" id="targetImg" />
-            <div class="caption">
-                <a href="#" id="clearIcon" onclick="ClearPreview()"><i class=" fas fa-trash-alt"></i></a>
-                <span id="description"></span>
-            </div>
-            <button class="btn btn-secondary" onclick="UploadImage()">Upload</button>
+        <button class="btn btn-secondary" onclick="UploadImage()">Upload</button>
         <div class="col-md-2 img-thumbnail" id="UploadedImage">
         </div>
-        </div>
+    </div>
 </div>
 
 <p>Acesse ao DropDown State/Country <a href="/Teste/Dropdown" class="btn btn-link">DropDown</a></p>
+
+<div class="col-md-9">
+
+    @Html.TextBoxFor(m => m.Name, new {@class="form-control", placeholder="Search here"})
+
+
+    <table class="table table-striped">
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                DepartmentName
+            </th>
+            <th>
+                Address
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+        <tbody id="employeeRow">
+            <tr>
+                @if (ViewBag.EmployeeList != null)
+                {
+                    foreach (var item in ViewBag.EmployeeList)
+                    {
+                        <tr>
+                            <td>@item.Name</td>
+                            <td>@item.DepartmentName</td>
+                            <td>@item.Address</td>
+                            <td><a href="#"><i class="fas fa-eye"></i>View</a></td>
+                        </tr>
+
+                    }
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <footer>
     @Html.Partial("_footer")
@@ -89,17 +131,16 @@
         var file = $("#imageBrowse")[0].files[0];
         var data = new FormData();
         data.append("ImageFile", file);
-        data.append("ProductName", "SamsungA8");
 
         $.ajax({
-            url: '/Teste/Menu/UploadImage',
+            url: '/Teste/UploadImage',
             type: 'POST',
             data: data,
             contentType: false,
             processData: false,
             success: function(response) {
                 if (response.imgID) {
-                    $("#UploadedImage").html('<img src="/Teste/Menu/ImageRetrieve?imgID=' + response.imgID + '" class="img-responsive thumbnail" />');
+                    $("#UploadedImage").html('<img src="/Teste/ImageRetrieve?imgID=' + response.imgID + '" class="img-responsive thumbnail" />');
                 } else {
                     alert("Upload failed!");
                 }
@@ -109,4 +150,17 @@
             }
         });
     };
+
+        $("#Name").on("input", function() {
+        var searchText = $(this).val();
+
+        $.ajax({
+            type: "GET",
+            url: "/Teste/GetSearchRecord",
+            data: { SearchText: searchText },
+            success: function(response) {
+                $("#employeeRow").html(response);
+            }
+        });
+    });
 </script>

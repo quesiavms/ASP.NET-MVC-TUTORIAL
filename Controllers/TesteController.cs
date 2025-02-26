@@ -239,7 +239,33 @@ namespace MVCTutorial.Controllers
 
         public IActionResult Menu()
         {
+            List<EmployeeViewModel> list = _connection.Employee.Select(x => new EmployeeViewModel
+            {
+                Name = x.Name,
+                EmployeeID = x.EmployeeID,
+                DepartmentName = x.Department.DepartmentName,
+                Address = x.Address
+            }).ToList();
+
+            ViewBag.EmployeeList = list;
+
             return View();
+        }
+
+        public IActionResult GetSearchRecord(string SearchText)
+        {
+            List<EmployeeViewModel> list = _connection.Employee
+                                            .Where(x => x.Name.Contains(SearchText) || (x.Department.DepartmentName.Contains(SearchText)))
+                                            .Select(x => new EmployeeViewModel
+                                        {
+                                            Name = x.Name,
+                                            EmployeeID = x.EmployeeID,
+                                            DepartmentName = x.Department.DepartmentName,
+                                            Address = x.Address
+                                        }).ToList();
+
+
+            return PartialView("SearchPartial", list);
         }
 
         public IActionResult Logout()
@@ -394,7 +420,6 @@ namespace MVCTutorial.Controllers
 
         [HttpPost]
         [RequestSizeLimit(104857600)] // Exemplo: 100 MB
-        [Route("[controller]/Menu/UploadImage")]
         public IActionResult UploadImage([FromForm] ProductViewModel model)
         {
             try
@@ -431,7 +456,6 @@ namespace MVCTutorial.Controllers
         }
 
         [HttpGet]
-        [Route("[controller]/Menu/ImageRetrieve")]
         public IActionResult ImageRetrieve(int imgID)
         {
             var img = _connection.ImageStore.FirstOrDefault(x => x.ImageID == imgID);
