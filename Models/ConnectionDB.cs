@@ -20,6 +20,9 @@ namespace MVCTutorial.Models
         public DbSet<UserRole> UserRole { get; set; }
 
         public DbSet<ImageStore> ImageStore { get; set; }
+        public DbSet<Country> Country { get; set; }
+        public DbSet<State> State { get; set; }
+
 
     }
 }

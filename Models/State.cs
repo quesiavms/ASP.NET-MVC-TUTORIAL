@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace MVCTutorial.Models
 {
-    [Table("UserRole")]
-    public class UserRole
+    [Table("State")]
+    public class State
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RoleID { get; set; }
-        public string RoleName { get; set; }
-
+        public int StateID { get; set; }
+        public string StateName { get; set; }
+        public int CountryID { get; set; }
     }
 }

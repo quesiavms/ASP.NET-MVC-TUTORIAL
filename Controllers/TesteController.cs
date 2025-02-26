@@ -440,6 +440,32 @@ namespace MVCTutorial.Controllers
 
             return File(img.ImageByte, "image/jpeg");
         }
+
+        public List<Country> GetCountryList()
+        {
+            List<Country> countries = _connection.Country.ToList();
+
+            return countries;
+        }
+
+        [HttpGet]
+        public IActionResult GetStateList(int countryID)
+        {
+            List<State> stateList = _connection.State.Where(x => x.CountryID == countryID).ToList();
+
+            ViewBag.StateOptions = new SelectList(stateList, "StateID", "StateName");
+
+            return PartialView("StateOptionsPartial");
+        }
+
+        public IActionResult Dropdown()
+        {
+            ViewBag.CountryList = new SelectList(GetCountryList(), "CountryID", "CountryName");
+
+            return View();
+        }
+
+
     }
 }
 

@@ -1,15 +1,16 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace MVCTutorial.Models
 {
-    [Table("UserRole")]
-    public class UserRole
+    [Table("Country")]
+    public class Country
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int RoleID { get; set; }
-        public string RoleName { get; set; }
+        public int CountryID { get; set; }
+        public string CountryName { get; set; }
 
     }
 }
