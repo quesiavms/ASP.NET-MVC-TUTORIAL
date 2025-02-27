@@ -4,6 +4,7 @@ using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.Models;
 using MVCTutorial.Models;
@@ -23,7 +24,7 @@ namespace MVCTutorial.Controllers
             _webHostEnvironment = webHostEnvironment;
             _logger = logger;
         }
-
+        // interface user
         public IActionResult Index()
         {
             List<Employee> employeeList = _connection.Employee
@@ -68,7 +69,7 @@ namespace MVCTutorial.Controllers
 
             return View(employeeVM);
         }
-
+        // interface admin
         public IActionResult ManageEmployee()
         {
             List<EmployeeViewModel> listEmp = _connection.Employee.Where(x => x.isDeleted == false)
@@ -184,7 +185,7 @@ namespace MVCTutorial.Controllers
             }
             return PartialView("Partial2");
         }
-
+        // new site user
         public ActionResult Registration()
         {
             return View();
@@ -205,7 +206,7 @@ namespace MVCTutorial.Controllers
 
             return Json(new { success = true, message = "Register done with success!" });
         }
-
+        // login
         public IActionResult Login()
         {
             return View();
@@ -236,22 +237,24 @@ namespace MVCTutorial.Controllers
             }
             return Json(result);
         }
-
+        // Menu
         public IActionResult Menu()
         {
-            List<EmployeeViewModel> list = _connection.Employee.Select(x => new EmployeeViewModel
-            {
-                Name = x.Name,
-                EmployeeID = x.EmployeeID,
-                DepartmentName = x.Department.DepartmentName,
-                Address = x.Address
-            }).ToList();
+            List<EmployeeViewModel> list = _connection.Employee
+                                            .Where(e => e.isDeleted == false)
+                                            .Select(x => new EmployeeViewModel
+                                        {
+                                            Name = x.Name,
+                                            EmployeeID = x.EmployeeID,
+                                            DepartmentName = x.Department.DepartmentName,
+                                            Address = x.Address
+                                        }).ToList();
 
             ViewBag.EmployeeList = list;
 
             return View();
         }
-
+        // search record
         public IActionResult GetSearchRecord(string SearchText)
         {
             List<EmployeeViewModel> list = _connection.Employee
@@ -267,12 +270,13 @@ namespace MVCTutorial.Controllers
 
             return PartialView("SearchPartial", list);
         }
-
+        // logout
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login");
         }
+        // interface superadmin
         public IActionResult EmployeeUser()
         {
             var Employee = _connection.Employee.Where(x => x.isDeleted == false)
@@ -417,10 +421,10 @@ namespace MVCTutorial.Controllers
             }
             return PartialView("PartialUser2");
         }
-
+        // anexar imagens
         [HttpPost]
-        [RequestSizeLimit(104857600)] // Exemplo: 100 MB
-        public IActionResult UploadImage([FromForm] ProductViewModel model)
+        [RequestSizeLimit(104857600)]
+        public async Task<IActionResult> UploadImage([FromForm] ProductViewModel model)
         {
             try
             {
@@ -431,7 +435,7 @@ namespace MVCTutorial.Controllers
                 byte[] imageByte;
                 using (var memoryStream = new MemoryStream())
                 {
-                    file.CopyToAsync(memoryStream);
+                    await file.CopyToAsync(memoryStream);
                     imageByte = memoryStream.ToArray();
                 }
 
@@ -462,9 +466,24 @@ namespace MVCTutorial.Controllers
             if (img == null || img.ImageByte == null)
                 return NotFound();
 
-            return File(img.ImageByte, "image/jpeg");
+            return File(img.ImageByte, GetContentType(img.ImageName));
         }
+        private string GetContentType(string fileName)
+        {
+            var provider = new FileExtensionContentTypeProvider();
+            if (provider.TryGetContentType(fileName, out string contentType))
+            {
+                return contentType;
+            }
+            return "application/octet-stream";
+        }
+        // dropdown
+        public IActionResult Dropdown()
+        {
+            ViewBag.CountryList = new SelectList(GetCountryList(), "CountryID", "CountryName");
 
+            return View();
+        }
         public List<Country> GetCountryList()
         {
             List<Country> countries = _connection.Country.ToList();
@@ -482,12 +501,6 @@ namespace MVCTutorial.Controllers
             return PartialView("StateOptionsPartial");
         }
 
-        public IActionResult Dropdown()
-        {
-            ViewBag.CountryList = new SelectList(GetCountryList(), "CountryID", "CountryName");
-
-            return View();
-        }
 
 
     }

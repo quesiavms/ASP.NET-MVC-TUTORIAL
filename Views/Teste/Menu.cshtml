@@ -19,59 +19,38 @@
     }
 </style>
 
-<ul class="d-flex list-unstyled gap-3">
-    <li><a href="/Teste/Menu">Home</a></li>
-    <li><a href="/Teste/Login">Login</a></li>
-    <li><a href="/Teste/Registration">New Register</a></li>
-</ul>
-
-<div class="col-md-6" style="width: 50%;">
-    <div class="btn btn-primary">
-        <input type="file" id="imageBrowse" />
-    </div>
-
-    <hr />
-
-    <div id="imgPreview" class="img-thumbnail" style="display: none">
-        <img class="img-responsive" id="targetImg" />
-        <div class="caption">
-            <a href="#" id="clearIcon" onclick="ClearPreview()"><i class=" fas fa-trash-alt"></i></a>
-            <span id="description"></span>
-        </div>
-        <button class="btn btn-secondary" onclick="UploadImage()">Upload</button>
-        <div class="col-md-2 img-thumbnail" id="UploadedImage">
-        </div>
-    </div>
+<div class="d-flex justify-content-center align-items-center">
+    <ul class="d-flex list-unstyled gap-3">
+        <li><a href="/Teste/Menu">Home</a></li>
+        <li><a href="/Teste/Login">Login</a></li>
+        <li><a href="/Teste/Registration">New Register</a></li>
+    </ul>
 </div>
 
-<p>Acesse ao DropDown State/Country <a href="/Teste/Dropdown" class="btn btn-link">DropDown</a></p>
-
-<div class="col-md-9">
-
-    @Html.TextBoxFor(m => m.Name, new {@class="form-control", placeholder="Search here"})
-
-
-    <table class="table table-striped">
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                DepartmentName
-            </th>
-            <th>
-                Address
-            </th>
-            <th>
-                Action
-            </th>
-        </tr>
-        <tbody id="employeeRow">
+<div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
+    <div class="col-md-9">
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Search here" })
+        <table class="table table-striped">
             <tr>
-                @if (ViewBag.EmployeeList != null)
-                {
-                    foreach (var item in ViewBag.EmployeeList)
+                <th>
+                    Name
+                </th>
+                <th>
+                    DepartmentName
+                </th>
+                <th>
+                    Address
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+            <tbody id="employeeRow">
+                <tr>
+                    @if (ViewBag.EmployeeList != null)
                     {
+                        foreach (var item in ViewBag.EmployeeList)
+                        {
                         <tr>
                             <td>@item.Name</td>
                             <td>@item.DepartmentName</td>
@@ -79,17 +58,44 @@
                             <td><a href="#"><i class="fas fa-eye"></i>View</a></td>
                         </tr>
 
+                        }
                     }
-                }
-            </tr>
-        </tbody>
-    </table>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center align-items-center">
+    <p>Acesse ao DropDown <a href="/Teste/Dropdown" class="btn btn-link">StateCountry</a></p>
+</div>
+
+<div class="d-flex justify-content-center align-items-center" style="margin-bottom: 60px;">
+    <div class="col-md-6" style="text-align: center;">
+        <div>
+            Opção de anexar Fotos
+        </div>
+
+        <div class="btn btn-primary">
+            <input type="file" id="imageBrowse" />
+        </div>
+
+        <div id="imgPreview" class="img-thumbnail" style="display: none">
+            <img class="img-responsive" id="targetImg" />
+            <div class="caption">
+                <a href="#" id="clearIcon" onclick="ClearPreview()"><i class=" fas fa-trash-alt"></i></a>
+                <span id="description"></span>
+            </div>
+            <button class="btn btn-secondary" onclick="UploadImage()">Upload</button>
+            <div class="col-md-2 img-thumbnail" id="UploadedImage">
+            </div>
+        </div>
+    </div>
 </div>
 
 <footer>
     @Html.Partial("_footer")
 </footer>
-
 
 <script>
     $("#imageBrowse").change(function(){
