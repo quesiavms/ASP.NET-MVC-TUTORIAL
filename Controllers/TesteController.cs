@@ -501,8 +501,6 @@ namespace MVCTutorial.Controllers
             return PartialView("StateOptionsPartial");
         }
 
-
-
     }
 }
 

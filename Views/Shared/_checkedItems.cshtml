@@ -1,0 +1,26 @@
+﻿@model List<MVCTutorial.Models.MyShop>
+
+@{
+    Layout = null;
+}
+
+<div class="d-flex justify-content-center align-items-center" style="position: center">
+    <div class="col-md-5">
+        <ul class="list-group" id="checkedItemsList">
+            <li class="list-group-item active">
+                <h4>Checked Items</h4>
+            </li>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var item in Model)
+                {
+                    <li class="list-group-item">@item.ItemName</li>
+                }
+            }
+            else
+            {
+                <li class="list-group-item">No items selected.</li>
+            }
+        </ul>
+    </div>
+</div>

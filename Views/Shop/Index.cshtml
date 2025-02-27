@@ -1,0 +1,79 @@
+﻿@model MVCTutorial.Models.MyShop
+@{
+	ViewBag.Title = "IndexShop";
+	Layout = null;
+}
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<div class="d-flex justify-content-center align-items-center">
+	<div class="col-md-5">
+        <ul class="list-group">
+            <li class="list-group-item active" id="ItemList">
+                <h4>Item Available in my shop</h4>
+            </li>
+            @foreach (var item in ViewBag.ItemList)
+            {
+                <li class="list-group-item">
+                    <div class="form-check">
+                        <input type="checkbox" id="Check_@item.ItemID" class="checkbox-item" checked="@item.IsAvailable" />
+                        <label for="Check_@item.ItemID">@item.ItemName</label>
+                    </div>
+                </li>
+            }
+            <li class="list-group-item">
+                <button class="btn btn-success" onclick="SaveList()">Update Item</button>
+            </li>
+        </ul>
+	</div>
+</div>
+
+<div>
+    @Html.Partial("_checkedItems")
+</div>
+
+
+<footer>
+	@Html.Partial("_footer")
+</footer>
+
+<script>
+        var SaveList = function(){
+    var arrItem = [];
+    var commaSeparatedIds = "";
+
+    $(".checkbox-item:checked").each(function(index, value){
+        var checkedId = $(value).attr("id");
+        var arr = checkedId.split("_");
+        var currentCheckBoxId = arr[1];
+
+        arrItem.push(currentCheckBoxId);
+    });
+
+    console.log("Itens selecionados: ", arrItem);
+
+    if(arrItem.length != 0){
+        commaSeparatedIds = arrItem.join(",");
+
+        $.ajax({
+            type: "POST",
+            url: "/Shop/SaveList",
+            data: { ItemList: commaSeparatedIds },
+            success: function(response){
+                console.log("Resposta recebida: ", response);
+                    $("#checkedItemsList").html(response);
+            },
+            error: function(xhr, status, error){
+                console.log("Erro ao enviar requisição: " + error);
+                if(xhr.status == 500){
+                    console.log("Erro interno do servidor. Verifique os logs do servidor para mais informações.");
+                }
+            }
+        });
+    } else {
+        console.log("Nenhum item marcado.");
+    }
+}
+</script>
