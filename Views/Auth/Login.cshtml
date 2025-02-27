@@ -27,7 +27,7 @@
             </div>
 
             <div class="col-md-12 text-center mt-3">
-                <p>Ainda não tem uma conta? <a href="/Teste/Registration" class="btn btn-link">Crie aqui</a></p>
+                <p>Ainda não tem uma conta? <a href="/Auth/Registration" class="btn btn-link">Crie aqui</a></p>
             </div>
         </div>
     </form>
@@ -49,19 +49,19 @@
 
         $.ajax({
             type: "POST",
-            url:"/Teste/LoginUser",
+            url:"/Auth/LoginUser",
             data: data,
             success: function(response){
                 if (response == 'Fail') {
                 alert("Please Enter validate data");
-                window.location.href="/Teste/Login"
+                window.location.href="/Auth/Login"
                 }else if (response == "Admin"){
-                    window.location.href="/Teste/ManageEmployee" //redirecionando pras paginas admin
+                    window.location.href="/Employee/ManageEmployee" //redirecionando pras paginas admin
                 }else if(response == "SuperAdmin"){
-                    window.location.href="/Teste/EmployeeUser" // redirecionando para paginas de superadmin
+                    window.location.href="/User/EmployeeUser" // redirecionando para paginas de superadmin
                 }
                 else{
-                    window.location.href="/Teste/Index" //redirecionando pras paginas user default
+                    window.location.href="/Employee/Index" //redirecionando pras paginas user default
                 }
             }
          });

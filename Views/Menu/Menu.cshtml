@@ -21,9 +21,9 @@
 
 <div class="d-flex justify-content-center align-items-center">
     <ul class="d-flex list-unstyled gap-3">
-        <li><a href="/Teste/Menu">Home</a></li>
-        <li><a href="/Teste/Login">Login</a></li>
-        <li><a href="/Teste/Registration">New Register</a></li>
+        <li><a href="/Menu/Menu">Home</a></li>
+        <li><a href="/Auth/Login">Login</a></li>
+        <li><a href="/Auth/Registration">New Register</a></li>
     </ul>
 </div>
 
@@ -67,7 +67,7 @@
 </div>
 
 <div class="d-flex justify-content-center align-items-center">
-    <p>Acesse ao DropDown <a href="/Teste/Dropdown" class="btn btn-link">StateCountry</a></p>
+    <p>Acesse ao DropDown <a href="/Menu/Dropdown" class="btn btn-link">StateCountry</a></p>
 </div>
 
 <div class="d-flex justify-content-center align-items-center">
@@ -143,14 +143,14 @@
         data.append("ImageFile", file);
 
         $.ajax({
-            url: '/Teste/UploadImage',
+            url: '/Menu/UploadImage',
             type: 'POST',
             data: data,
             contentType: false,
             processData: false,
             success: function(response) {
                 if (response.imgID) {
-                    $("#UploadedImage").html('<img src="/Teste/ImageRetrieve?imgID=' + response.imgID + '" class="img-responsive thumbnail" />');
+                    $("#UploadedImage").html('<img src="/Menu/ImageRetrieve?imgID=' + response.imgID + '" class="img-responsive thumbnail" />');
                 } else {
                     alert("Upload failed!");
                 }
@@ -166,7 +166,7 @@
 
         $.ajax({
             type: "GET",
-            url: "/Teste/GetSearchRecord",
+            url: "/Menu/GetSearchRecord",
             data: { SearchText: searchText },
             success: function(response) {
                 $("#employeeRow").html(response);

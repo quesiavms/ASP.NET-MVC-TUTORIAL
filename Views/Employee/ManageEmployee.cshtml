@@ -118,7 +118,7 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Teste/DeleteEmployee",
+                url: "/Employee/DeleteEmployee",
                 data: { EmployeeID: empID },
                 success: function(result) {
                     $("modalBody").show();
@@ -133,7 +133,7 @@
             $("#btnDelete").hide();
             $.ajax({
                 type: "POST",
-                url: "/Teste/ShowEmployee",
+                url: "/Employee/ShowEmployee",
                 data: { EmployeeID: employeeID },
                 success: function(response) {
 
@@ -157,7 +157,7 @@
 
         $.ajax({
             type: "GET",
-            url: window.location.origin + "/Teste/AddEditEmployee",
+            url: window.location.origin + "/Employee/AddEditEmployee",
             data: { employeeID: empID },
             success: function(response){
                 $("#myModalBodyDiv1").html(response);
@@ -176,7 +176,7 @@
             };
             $.ajax({
                 type: "POST",
-                url: "/Teste/UpdateEmployee",
+                url: "/Employee/UpdateEmployee",
                 data: employeeData,
                 success: function(response){
                     $("#myModalBodyDiv1").html(response);
@@ -197,7 +197,7 @@
             };
             $.ajax({
                 type: "POST",
-                url: "/Teste/InsertEmployee",
+                url: "/Employee/InsertEmployee",
                 data: employeeData,
                 success: function(response){
                     $("#myModalBodyDiv1").html(response);

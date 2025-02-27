@@ -31,7 +31,7 @@
 
 			$.ajax({
 				type:"GET",
-				url:"/Teste/GetStateList?countryID="+countryID,
+				url:"/Menu/GetStateList?countryID="+countryID,
 				success: function(response){
 					$("#StateID").empty();
 					$("#StateID").append(response);

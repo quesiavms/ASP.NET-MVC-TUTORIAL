@@ -23,11 +23,11 @@
 
             $.ajax({
                 type: "POST",
-                url: "/Teste/AddEditEmployee",
+                url: "/Employee/AddEditEmployee",
                 data: data,
                 success: function(response) {
                     $("#myModal").modal("hide");
-                    window.location.href="/Teste/DeleteEmployee"
+                    window.location.href="/Employee/DeleteEmployee"
                 }
             });
         });

@@ -31,7 +31,7 @@
             </div>
 
             <div class="col-md-12 text-center mt-3">
-                <p>Já tem uma conta? <a href="/Teste/Login" class="btn btn-link">Faça login aqui</a></p>
+                <p>Já tem uma conta? <a href="/Auth/Login" class="btn btn-link">Faça login aqui</a></p>
             </div>
         </div>
     </form>
@@ -47,7 +47,7 @@
 
         $.ajax({
             type: "POST",
-            url:"/Teste/RegisterUser",
+            url:"/Auth/RegisterUser",
             data: data,
             success: function(response){
                 if (response.success) {
