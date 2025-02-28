@@ -48,7 +48,7 @@ namespace MVCTutorial.Controllers
             if(!string.IsNullOrEmpty(SearchText))
             {
                 list = _connection.Employee
-                                .Where(x => x.Name.Contains(SearchText) || (x.Department.DepartmentName.Contains(SearchText)))
+                                .Where(x => x.Name.Contains(SearchText) || (x.Department.DepartmentName.Contains(SearchText)) || (x.Address.Contains(SearchText)))
                                 .Select(x => new EmployeeViewModel
                                 {
                                     Name = x.Name,
