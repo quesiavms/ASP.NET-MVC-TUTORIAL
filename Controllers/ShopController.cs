@@ -16,22 +16,19 @@ namespace MVCTutorial.Controllers
         [HttpPost]
         public IActionResult SaveList(string ItemList)
         {
-            try
+            if (string.IsNullOrEmpty(ItemList))
             {
-                var arr = ItemList.Split(",", StringSplitOptions.RemoveEmptyEntries);
-                var itemList = GetItemList();
-                List<MyShop> checkedItems = new();
-
-                if (arr.Length > 0)
-                    checkedItems = itemList.Where(x => arr.Contains(x.ItemID.ToString())).ToList();
-
-                return PartialView("_checkedItems", checkedItems);
+                return PartialView("_checkedItems", new List<MyShop>());
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erro ao processar a requisição: " + ex.Message);
-                return StatusCode(500, "Erro interno no servidor.");
-            }
+
+            var arr = ItemList.Split(",", StringSplitOptions.RemoveEmptyEntries);
+            var itemList = GetItemList();
+            List<MyShop> checkedItems = new();
+
+            if (arr.Length > 0)
+                checkedItems = itemList.Where(x => arr.Contains(x.ItemID.ToString())).ToList();
+
+            return PartialView("_checkedItems", checkedItems);
         }
 
         private List<MyShop> GetItemList()

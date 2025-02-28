@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <div class="d-flex justify-content-center align-items-center">
-	<div class="col-md-5">
+    <div class="col-md-5" style="width: 650px;">
         <ul class="list-group">
             <li class="list-group-item active" id="ItemList">
                 <h4>Item Available in my shop</h4>
@@ -54,7 +54,6 @@
 
     console.log("Itens selecionados: ", arrItem);
 
-    if(arrItem.length != 0){
         commaSeparatedIds = arrItem.join(",");
 
         $.ajax({
@@ -72,8 +71,5 @@
                 }
             }
         });
-    } else {
-        console.log("Nenhum item marcado.");
-    }
 }
 </script>
