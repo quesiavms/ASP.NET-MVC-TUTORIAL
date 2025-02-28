@@ -44,16 +44,31 @@ namespace MVCTutorial.Controllers
 
         public IActionResult GetSearchRecord(string SearchText)
         {
-            List<EmployeeViewModel> list = _connection.Employee
-                                            .Where(x => x.Name.Contains(SearchText) || (x.Department.DepartmentName.Contains(SearchText)))
-                                            .Select(x => new EmployeeViewModel
-                                        {
-                                            Name = x.Name,
-                                            EmployeeID = x.EmployeeID,
-                                            DepartmentName = x.Department.DepartmentName,
-                                            Address = x.Address
-                                        }).ToList();
-
+            List<EmployeeViewModel> list;
+            if(!string.IsNullOrEmpty(SearchText))
+            {
+                list = _connection.Employee
+                                .Where(x => x.Name.Contains(SearchText) || (x.Department.DepartmentName.Contains(SearchText)))
+                                .Select(x => new EmployeeViewModel
+                                {
+                                    Name = x.Name,
+                                    EmployeeID = x.EmployeeID,
+                                    DepartmentName = x.Department.DepartmentName,
+                                    Address = x.Address
+                                }).ToList();
+            }
+            else
+            {
+                list = _connection.Employee
+                .Where(e => e.isDeleted == false)
+                .Select(x => new EmployeeViewModel
+                {
+                    Name = x.Name,
+                    EmployeeID = x.EmployeeID,
+                    DepartmentName = x.Department.DepartmentName,
+                    Address = x.Address
+                }).ToList();
+            }
 
             return PartialView("SearchPartial", list);
         }

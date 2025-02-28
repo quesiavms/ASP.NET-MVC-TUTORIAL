@@ -41,6 +41,7 @@
 
 	<ItemGroup>
 	  <None Include="wwwroot\Contents\InternetSlowdown_Day.gif" />
+	  <None Include="wwwroot\js\uploadImage.js" />
 	</ItemGroup>
 
 </Project>
