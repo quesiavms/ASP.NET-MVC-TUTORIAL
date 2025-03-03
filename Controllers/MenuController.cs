@@ -42,6 +42,7 @@ namespace MVCTutorial.Controllers
             return View();
         }
 
+        [HttpGet]
         public IActionResult GetSearchRecord(string SearchText)
         {
             List<EmployeeViewModel> list;
@@ -97,6 +98,32 @@ namespace MVCTutorial.Controllers
             return PartialView("StateOptionsPartial");
         }
 
+        [HttpGet]
+        public JsonResult GetSuggestion(string text)
+        {
+            List<MyShop> itemList = GetItemList();
+
+            List<string> list = itemList
+                .Where(x => x.ItemName.ToLower().Contains(text.ToLower()))
+                .Select(x => x.ItemName)
+                .ToList();
+
+            return Json(list);
+        }
+        private List<MyShop> GetItemList()
+        {
+            return new()
+            {
+                new MyShop { ItemID = 1, ItemName = "Rice", IsAvailable = false },
+                new MyShop { ItemID = 2, ItemName = "Pulse", IsAvailable = false },
+                new MyShop { ItemID = 3, ItemName = "Salt", IsAvailable = false },
+                new MyShop { ItemID = 4, ItemName = "Soap", IsAvailable = false },
+                new MyShop { ItemID = 5, ItemName = "Apple", IsAvailable = false },
+                new MyShop { ItemID = 6, ItemName = "Orange", IsAvailable = false },
+                new MyShop { ItemID = 7, ItemName = "Boy", IsAvailable = false },
+                new MyShop { ItemID = 8, ItemName = "Girl", IsAvailable = false }
+            };
+        }
     }
 }
 

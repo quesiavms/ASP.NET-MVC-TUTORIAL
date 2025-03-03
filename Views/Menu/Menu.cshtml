@@ -7,9 +7,10 @@
 
 <link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
-<script src="/js/uploadImage.js"></script>
 
 <div class="d-flex justify-content-center align-items-center">
     <ul class="d-flex list-unstyled gap-3">
@@ -17,6 +18,11 @@
         <li><a href="/Auth/Login">Login</a></li>
         <li><a href="/Auth/Registration">New Register</a></li>
     </ul>
+</div>
+
+<div>
+    AutoComplete TextBox
+    <input type="text" class="form-control" id="textAutoComplete" placeholder="Digite aqui ..." />
 </div>
 
 <div class="d-flex justify-content-center align-items-center" style="height: 75vh;">
@@ -71,6 +77,23 @@
 </footer>
 
 <script>
+    $(document).ready(function() {
+        $("#textAutoComplete").autocomplete({
+            source: function(request, response){
+                $.ajax({
+                    type: "GET",
+                    url: "/Menu/GetSuggestion",
+                    data: { text: request.term },
+                    success: function(data){
+                        response($.map(data, function(item){
+                            return { label: item, value: item };
+                        }));
+                    }
+                });
+            }
+        });
+    })
+
     $("#Name").on("input", function() {
         var searchText = $(this).val();
 
