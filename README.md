@@ -1,5 +1,5 @@
 # 📚 Estudando MVC/BootStrap/Jquery Ajax
-### Este projeto consiste na criação de um projeto mvc, para melhor compreensao dos conteudos acompanhados por aula em video online
+### Este projeto consiste na criação de um projeto mvc, para melhor compreensao dos conteudos estudados
 ---
 ### Tecnologias e Conhecimentos Usadas Neste Projeto de Estudos
 ![C#](https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white)
