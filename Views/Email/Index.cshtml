@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+
+<div class="container" style="margin-top: 50px;">
+    <input type="text" class="form-control" id="emailTo" placeholder="Email do destinatário" />
+    <input type="text" class="form-control" id="emailSubject" placeholder="Assunto do email" />
+    <textarea class="form-control" id="emailBody" placeholder="Corpo do email"></textarea>
+    <a class="btn btn-danger" onclick="SendEmail()">Click to Send Email</a>
+</div>
+
+
+<script>
+    var SendEmail = function(){
+        var from = "seu_email@gmail.com";
+        var to = $("#emailTo").val();
+        var subject = $("#emailSubject").val();
+        var body = $("#emailBody").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Email/SentMailToUser",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: JSON.stringify({
+                From: from,
+                To: to,
+                Subject: subject,
+                Body: body
+            }),
+            success: function(data){
+                alert("Email enviado com sucesso!");
+            },
+            error: function(xhr, status, error){
+                alert("Erro ao enviar email: " + error);
+            }
+        })
+    }
+</script>

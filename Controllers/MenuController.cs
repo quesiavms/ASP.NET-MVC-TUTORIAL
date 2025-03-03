@@ -124,6 +124,8 @@ namespace MVCTutorial.Controllers
                 new MyShop { ItemID = 8, ItemName = "Girl", IsAvailable = false }
             };
         }
+
+
     }
 }
 
