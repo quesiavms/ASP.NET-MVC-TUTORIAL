@@ -11,16 +11,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
 <script src="/js/uploadImage.js"></script>
 
-
-<style>
-    #targetImg {
-    max-width: 100%;
-    max-height: 300px;
-    width: auto;
-    height: auto;
-    }
-</style>
-
 <div class="d-flex justify-content-center align-items-center">
     <ul class="d-flex list-unstyled gap-3">
         <li><a href="/Menu/Menu">Home</a></li>
@@ -72,27 +62,8 @@
     <p>Acesse My Shop<a href="/Shop/Index" class="btn btn-link">CheckBoxList</a></p>
 </div>
 
-<div class="d-flex justify-content-center align-items-center" style="margin-bottom: 60px;">
-    <div class="col-md-6" style="text-align: center;">
-        <div>
-            Opção de anexar Fotos
-        </div>
-
-        <div class="btn btn-primary">
-            <input type="file" id="imageBrowse" />
-        </div>
-
-        <div id="imgPreview" class="img-thumbnail" style="display: none">
-            <img class="img-responsive" id="targetImg" />
-            <div class="caption">
-                <a href="#" id="clearIcon" onclick="ClearPreview()"><i class=" fas fa-trash-alt"></i></a>
-                <span id="description"></span>
-            </div>
-            <button class="btn btn-secondary" onclick="UploadImage()">Upload</button>
-            <div class="col-md-2 img-thumbnail" id="UploadedImage">
-            </div>
-        </div>
-    </div>
+<div class="d-flex justify-content-center align-items-center" style="height: 15vh;">
+    <p>Deseja anexar uma foto?<a href="/Image/Index" class="btn btn-link">Anexe aqui</a></p>
 </div>
 
 <footer>
@@ -100,63 +71,6 @@
 </footer>
 
 <script>
-    $("#imageBrowse").change(function(){
-        var file = this.files;
-        if(file && file[0]){
-            ReadImage(file[0])
-        }
-    });
-
-    var ReadImage = function(file){
-        var reader = new FileReader;
-        var image = new Image;
-
-        reader.readAsDataURL(file);
-        reader.onload = function(_file){
-            image.src= _file.target.result;
-            image.onload = function(){
-                var height = this.height;
-                var width = this.width;
-                var type = file.type;
-                var size = (file.size / 1024).toFixed(2) + " KB";
-
-                $("#targetImg").attr('src',_file.target.result);
-                $("#description").text("Size: "+size+","+height+"X"+width+","+type+"");
-                $("#imgPreview").show();
-            }
-        }
-    }
-
-    var ClearPreview = function(){
-        $("#imageBrowse").val('');
-        $("#description").text('');
-        $("#imgPreview").hide();
-    }
-
-    var UploadImage = function () {
-        var file = $("#imageBrowse")[0].files[0];
-        var data = new FormData();
-        data.append("ImageFile", file);
-
-        $.ajax({
-            url: '/Menu/UploadImage',
-            type: 'POST',
-            data: data,
-            contentType: false,
-            processData: false,
-            success: function(response) {
-                if (response.imgID) {
-                    $("#UploadedImage").html('<img src="/Menu/ImageRetrieve?imgID=' + response.imgID + '" class="img-responsive thumbnail" />');
-                } else {
-                    alert("Upload failed!");
-                }
-            },
-            error: function() {
-                alert("An error occurred during the upload.");
-            }
-        });
-    };
-
     $("#Name").on("input", function() {
         var searchText = $(this).val();
 

@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+<style>
+    #targetImg {
+        max-width: 100%;
+        max-height: 300px;
+        width: auto;
+        height: auto;
+    }
+
+    .uploaded-img {
+        max-width: 100%;
+        max-height: 300px;
+        width: auto;
+        height: auto;
+    }
+</style>
+
+<div class="d-flex justify-content-center align-items-center" style="margin-bottom: 60px;">
+    <div class="col-md-6" style="text-align: center;">
+        <div>
+            Opção de anexar Fotos
+        </div>
+
+        <label class="btn btn-primary" id="fileButton">
+            <input type="file" id="imageBrowse" />
+        </label>
+
+        <div id="imgPreview" class="img-thumbnail" style="display: none">
+            <img class="img-responsive" id="targetImg" />
+            <div class="caption">
+                <a href="#" id="clearIcon" onclick="ClearPreview()"><i class=" fas fa-trash-alt"></i></a>
+                <span id="description"></span>
+            </div>
+            <button class="btn btn-secondary" onclick="UploadImage()">Upload</button>
+            <div class="col-md-2 img-thumbnail" id="UploadedImage">
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    @Html.Partial("_footer")
+</footer>
+
+
+<script>
+    $("#imageBrowse").change(function(){
+        try {
+            var file = this.files;
+            if(file && file[0]){
+                ReadImage(file[0])
+            }
+        } catch (error) {
+            console.error("Erro ao processar o arquivo:", error);
+            alert("Ocorreu um erro ao processar o arquivo.");
+        }
+    });
+
+    var ReadImage = function(file){
+        var reader = new FileReader;
+        var image = new Image;
+
+        reader.readAsDataURL(file);
+        reader.onload = function(_file){
+            image.src= _file.target.result;
+            image.onload = function(){
+                var height = this.height;
+                var width = this.width;
+                var type = file.type;
+                var size = (file.size / 1024).toFixed(2) + " KB";
+
+                $("#targetImg").attr('src',_file.target.result);
+                $("#description").text("Size: "+size+","+height+"X"+width+","+type+"");
+                $("#imgPreview").show();
+            }
+        }
+    }
+
+    var ClearPreview = function(){
+        $("#imageBrowse").val('');
+        $("#description").text('');
+        $("#imgPreview").hide();
+        $("#UploadedImage").show();
+    }
+
+    var UploadImage = function () {
+        var fileInput = $("#imageBrowse")[0];
+
+        if (!fileInput.files.length) {
+            alert("Nenhuma imagem foi selecionada!");
+            return;
+        }
+
+        var file = fileInput.files[0];
+        var data = new FormData();
+        data.append("ImageFile", file);
+
+        console.log("Enviando imagem para upload:", file);
+
+        $.ajax({
+            url: '/Image/UploadImage',
+            type: 'POST',
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                console.log("Resposta do servidor:", response);
+                if (response.imgID) {
+                    $("#UploadedImage").html('<img src="/Image/ImageRetrieve?imgID=' + response.imgID + '" class="img-responsive thumbnail uploaded-img" />');
+                } else {
+                    alert("Upload falhou!");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("Erro no upload:", status, error);
+                alert("Ocorreu um erro ao enviar a imagem.");
+            }
+        });
+    };
+</script>
+
+

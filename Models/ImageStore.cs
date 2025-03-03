@@ -16,6 +16,8 @@ namespace MVCTutorial.Models
             [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
             public int ImageID { get; set; }
             public string ImageName { get; set; }
+
+            [Column(TypeName = "VARBINARY(MAX)")]
             public byte[] ImageByte { get; set; }
             public string ImagePath { get; set; }
             public bool? IsDeleted { get; set; }

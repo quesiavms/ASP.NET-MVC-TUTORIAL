@@ -4,10 +4,12 @@ namespace MVCTutorial.Models
 {
     public class ConnectionDB : DbContext
     {
+        public ConnectionDB() : base() { }
         public ConnectionDB(DbContextOptions<ConnectionDB> options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseLazyLoadingProxies(); // Habilita Lazy Loading
+            optionsBuilder.UseSqlServer("Server=Quesia_NOTE;Database=MVCTutorial;Integrated Security=True;TrustServerCertificate=True;");
+            optionsBuilder.UseLazyLoadingProxies();
         }
         public DbSet<Employee> Employee { get; set; }
 

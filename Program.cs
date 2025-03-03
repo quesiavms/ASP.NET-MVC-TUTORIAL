@@ -6,7 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configurando o banco de dados
 builder.Services.AddDbContext<ConnectionDB>(options =>
-    options.UseSqlServer("Server=Quesia_NOTE;Database=MVCTutorial;Integrated Security=True;TrustServerCertificate=True;"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -50,6 +50,10 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
 app.UseSession();
 app.UseAuthorization();
 app.MapControllerRoute(
