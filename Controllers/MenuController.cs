@@ -125,7 +125,26 @@ namespace MVCTutorial.Controllers
             };
         }
 
+        public IActionResult EmployeeRecord()
+        {
+            return View();
+        }
 
+        [HttpGet]
+        public JsonResult GetEmployeeRecord()
+        {
+            List<EmployeeViewModel> list = _connection.Employee.Select(x => new EmployeeViewModel()
+            {
+                Name = x.Name,
+                EmployeeID = x.EmployeeID,
+                DepartmentID = x.DepartmentID,
+                DepartmentName = x.Department.DepartmentName,
+                Address = x.Address,
+                isDeleted = x.isDeleted
+            }).ToList();
+
+            return Json(list);
+        }
     }
 }
 

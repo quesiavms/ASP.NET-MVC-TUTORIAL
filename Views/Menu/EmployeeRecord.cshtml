@@ -1,0 +1,60 @@
+﻿@{
+	ViewBag.Title = "EmployeeRecord";
+	Layout = null;
+}
+<link href="/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+
+<div class="d-flex justify-content-center align-items-center">
+	<table class="display" id="MyDataTable">
+		<thead>
+			<tr>
+				<th>EmployeeName</th>
+				<th>Department</th>
+				<th>Address</th>
+				<th>EmployeeID</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+	</table>
+</div>
+
+<script>
+	$(document).ready(function(){
+		GetEmployeeRecord();
+	});
+
+	var GetEmployeeRecord = function(){
+		$.ajax({
+			type: "GET",
+			url: "/Menu/GetEmployeeRecord",
+			success: function(response){
+				console.log("Response from server:", response);
+				BindDataTable(response);
+			}
+		});
+	}
+
+	var BindDataTable = function(response){
+		$("#MyDataTable").DataTable({
+			data: response,
+			columns : [
+				{data: "name"},
+				{data: "departmentName"},
+				{data: "address"},
+				{data: "employeeID"},
+			]
+		})
+
+	}
+</script>
+
+
