@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using MVCTutorial.Models;
 
 namespace MVCTutorial.Controllers
@@ -50,7 +51,10 @@ namespace MVCTutorial.Controllers
 
         public IActionResult EmployeeDetail(int EmployeeID)
         {
-            Employee employee = _connection.Employee.SingleOrDefault(x => x.EmployeeID == EmployeeID);
+            Employee employee = _connection.Employee
+                                .Include(e => e.Department)
+                                .Include(e=> e.Sites)
+                                .SingleOrDefault(x => x.EmployeeID == EmployeeID);
             EmployeeViewModel employeeVM = new EmployeeViewModel();
 
             employeeVM.Name = employee.Name;
@@ -99,7 +103,10 @@ namespace MVCTutorial.Controllers
 
             if (employeeID > 0)
             {
-                Employee emp = _connection.Employee.SingleOrDefault(x => x.EmployeeID == employeeID && x.isDeleted == false);
+                Employee emp = _connection.Employee
+                                .Include(e => e.Department)
+                                .Include(e => e.Sites)
+                                .SingleOrDefault(x => x.EmployeeID == employeeID && x.isDeleted == false);
                 empViewModel.EmployeeID = emp.EmployeeID;
                 empViewModel.DepartmentID = emp.DepartmentID;
                 empViewModel.Name = emp.Name;
