@@ -12,7 +12,6 @@ builder.Services.AddDbContext<ConnectionDB>(options =>
 builder.Services.AddControllersWithViews();
 
 //Habilitando o uso do HttpContext.Session. para o Login
-builder.Services.AddControllersWithViews();
 builder.Services.AddDistributedMemoryCache(); // Cache da sessão em memória
 builder.Services.AddSession(options =>
 {
@@ -49,12 +48,12 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseSession();
 app.UseRouting();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
 });
-app.UseSession();
 app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",

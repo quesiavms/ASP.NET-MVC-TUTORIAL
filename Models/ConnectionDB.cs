@@ -4,12 +4,22 @@ namespace MVCTutorial.Models
 {
     public class ConnectionDB : DbContext
     {
-        public ConnectionDB() : base() { }
-        public ConnectionDB(DbContextOptions<ConnectionDB> options) : base(options) { }
+        private readonly IConfiguration _configuration;
+
+        public ConnectionDB(IConfiguration configuration, DbContextOptions<ConnectionDB> options)
+            : base(options)
+        {
+            _configuration = configuration;
+        }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=Quesia_NOTE;Database=MVCTutorial;Integrated Security=True;TrustServerCertificate=True;");
-            optionsBuilder.UseLazyLoadingProxies();
+            //if (!optionsBuilder.IsConfigured)
+            //{
+            //    var connectionString = _configuration.GetConnectionString("DefaultConnection");
+            //    optionsBuilder.UseSqlServer(connectionString);
+            //    optionsBuilder.UseLazyLoadingProxies();
+            //}
         }
         public DbSet<Employee> Employee { get; set; }
 
